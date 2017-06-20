@@ -12,6 +12,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
 <script type="text/javascript" src="/resources/js/gridstack.js"></script>
 <script type="text/javascript" src="/resources/js/gridstack.jQueryUI.js"></script>
+<script type="text/javascript" src="/resources/js/tiscreen.common.js"></script>
+<script type="text/javascript" src="/resources/js/tiscreen.dashboard.js"></script>
 
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -30,6 +32,9 @@
 </style>
     
 <script type="text/javascript">
+
+var componentItems = new Object(); 
+
 $(function () {
   
   var options = {
@@ -38,9 +43,7 @@ $(function () {
       vertical_margin: 10
   };
   
-  init();
-  
-  function init() {
+  var initialize = function() {
     $(".grid-stack").gridstack(options);
     this.grid = $('.grid-stack').data('gridstack');
     
@@ -64,7 +67,7 @@ $(function () {
     var divId = "container_" + numComponent;
     this.grid.addWidget($("<div><div class='grid-stack-item-content' id=" + divId + " style='height: 100%; max-width: 100%; margin: 0 auto'/><div/>"), node.x, node.y, node.width, node.height);
     
-    $("#" + divId).load("/load.do", {"divId" : divId, "name": "alarm"});
+    $("#" + divId).load("/load.do", {"divId" : divId, "name": "example"});
 //     var component_title = cmpnInfo.component_title.replace(/([\S]+)$/,"<span>$1</span>");
 //     $("<div id='" + cntnId + "'></div>")
 //       .prependTo("#droppable_pannel_" + pannelNo)
@@ -84,9 +87,7 @@ $(function () {
     numComponent++;
   }
   
-  // For This example, im going to use sample xml from o'reily for practice
-  // located at url http://examples.oreilly.com/9780596002527/examples/first.xml
-  // We are going to extract character name nodes for this sample
+  initialize();
   
 });
 </script>
