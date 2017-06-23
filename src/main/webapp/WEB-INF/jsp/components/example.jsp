@@ -1,22 +1,23 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="wrap" id="${divId}" style="width: 100%; height: 100%;"></div>
+<div class="wrap" id="${tiContainerId}" style="width: 100%; height: 100%;"></div>
 
 <script type="text/javascript">
   
   var initialize = function() {
-    var id = "${divId}";
-    componentItems[id] = $("#" + id).tiComponent({
-      id : id,
+    var tiComponentId = "${tiComponentId}";
+    var tiContainerId = "${tiContainerId}";
+    tiComponentItems[tiComponentId] = $("#" + tiContainerId).tiComponent({
+      id : tiComponentId,
       title : "Test Component...by.lagoon"
     });
-    componentItems[id].initPage();
+    tiComponentItems[tiComponentId].initPage();
   };
   initialize();
   
   var test = function($curThis) {
-    console.log(componentItems[$curThis].getId());
+    console.log(tiComponentItems[$curThis].getId());
   }
 
 </script>
