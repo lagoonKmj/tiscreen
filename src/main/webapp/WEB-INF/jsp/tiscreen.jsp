@@ -31,8 +31,8 @@ $(function () {
   
   var options = {
       float: false,
-      cell_height: 80,
-      vertical_margin: 5,
+      cellHeight: 80,
+      verticalMargin: 5,
       handleClass : "grid-stack-item-content-header"
   };
   
@@ -50,8 +50,13 @@ $(function () {
       }
     });
     $("#remove-all-widget").on("click", function() {
-      this.grid.removeAll();
+      grid.removeAll();
     });
+    
+//     $("body").on("click", ".delete", function(){
+//       var grid = $('.grid-stack').data('gridstack');
+//       grid.remove_widget($(this).parents().eq(3));
+//     });
     
   }
   
@@ -62,15 +67,12 @@ $(function () {
     var tiComponent = "";
     tiComponent += "<div>";
     tiComponent += "  <div class='grid-stack-item-content' id=" + tiComponentId + ">";
-    tiComponent += "    <div class='grid-stack-item-content-header'>";
-    tiComponent += "      <h2>조직 현황</h2>";
-    tiComponent += "      <ul class=''><li><button type='button' onClick=''>설정</button></li><li><button type='button' onClick=''>삭제</button></li></ul>";
-    tiComponent += "    <div/>";
-    tiComponent += "  <div/>";
-    tiComponent += "<div/>";
-    this.grid.addWidget(tiComponent, node.x, node.y, node.width, node.height);
+    tiComponent += "  </div>";
+    tiComponent += "</div>";
     
-    $("#" + tiComponentId  + " .container").load("/load.do", {"tiComponentId" : tiComponentId, "numTiComponent" : numTiComponent, "name": "example"});
+    this.grid.addWidget($.parseHTML(tiComponent), node.x, node.y, node.width, node.height);
+    
+    $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, "numTiComponent" : numTiComponent, "name": "example", "title" : "Test Component(" + numTiComponent + ")...by.lagoon"});
 
     numTiComponent++;
   }
