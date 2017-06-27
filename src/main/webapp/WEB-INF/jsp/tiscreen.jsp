@@ -33,7 +33,20 @@ $(function () {
       float: false,
       cellHeight: 80,
       verticalMargin: 5,
-      handleClass : "grid-stack-item-content-header"
+      handleClass : "grid-stack-item-content-header",
+      animate : true
+  };
+  
+  var exNode = {
+      "x" : 0, 
+      "y" : 0, 
+      "width" : 4, 
+      "height" : 3, 
+      "autoPosition" : true, 
+      "minWidth" : 3, 
+      "maxWidth" : 8, 
+      "minHeight" : 2, 
+      "maxHeight" : 8 
   };
   
   var initialize = function() {
@@ -42,27 +55,45 @@ $(function () {
     this.grid = $('.grid-stack').data('gridstack');
     
     $("#add-new-widget").on("click", function() {
-      addTiComponent();
+      addTiComponent(exNode);
     });
     $("#add-new-widget-many").on("click", function() {
       for (var iCnt = 0; iCnt < 20; iCnt++) {
-        addTiComponent();
+        addTiComponent(exNode);
       }
     });
     $("#remove-all-widget").on("click", function() {
       grid.removeAll();
     });
-    
-//     $("body").on("click", ".delete", function(){
-//       var grid = $('.grid-stack').data('gridstack');
-//       grid.remove_widget($(this).parents().eq(3));
-//     });
+    $("#save").on("click", function() {
+      alert("저장완료~!");
+      var nodes = grid.grid.nodes;
+      var saveNodes = new Array();
+      for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
+        var node = nodes[iCnt];
+        delete node["el"];
+        delete node["_grid"];
+        node["autoPosition"] = false;
+        saveNodes.push(node);
+      }
+      tiCommon.setLocalStorage("tiscreen_data", JSON.stringify(saveNodes));
+    });
+    $("#load").on("click", function() {
+      var jsonNodes = tiCommon.getLocalStorage("tiscreen_data");
+      if (jsonNodes) {
+        grid.removeAll();
+        var nodes = JSON.parse(jsonNodes);
+        for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
+          addTiComponent(nodes[iCnt]);
+        }
+      }
+    });
     
   }
   
   var numTiComponent = 0;
-  var addTiComponent = function() {
-    var node = { x: 0, y: 0, width: 4, height: 2 };
+  var addTiComponent = function(node) {
+    var nodeId = "node_" + numTiComponent;
     var tiComponentId = "component_" + numTiComponent;
     var tiComponent = "";
     tiComponent += "<div>";
@@ -70,7 +101,19 @@ $(function () {
     tiComponent += "  </div>";
     tiComponent += "</div>";
     
-    this.grid.addWidget($.parseHTML(tiComponent), node.x, node.y, node.width, node.height);
+    grid.addWidget(
+        $.parseHTML(tiComponent), 
+        node.x, 
+        node.y, 
+        node.width, 
+        node.height,
+        node.autoPosition,
+        node.minWidth,
+        node.maxWidth,
+        node.minHeight,
+        node.maxHeight,
+        nodeId
+        );
     
     $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, "numTiComponent" : numTiComponent, "name": "example", "title" : "Test Component(" + numTiComponent + ")...by.lagoon"});
 
@@ -97,6 +140,8 @@ $(function () {
       <a class="btn btn-default" id="add-new-widget" href="#">Add TiComponent</a>
       <a class="btn btn-default" id="add-new-widget-many" href="#">Add TiComponent Many</a>
       <a class="btn btn-default" id="remove-all-widget" href="#">Remove All</a>
+      <a class="btn btn-default" id="save" href="#">Save</a>
+      <a class="btn btn-default" id="load" href="#">load</a>
     </div>
      <br/>
     <div class="grid-stack">
