@@ -1,0 +1,121 @@
+@charset "utf-8";
+
+/* dashboard */
+*{ padding: 0; margin: 0; color: #fff; font-size: 12px; font-family:'맑은 고딕', 'Malgun Gothic', '돋움', Dotum, Roboto, Arial, 'Apple Gothic', sans-serif; line-height: 18px; letter-spacing:-0.05em; }
+html, body{ height: 100%; background-color: #283750; -webkit-font-smoothing: antialiased; }
+body .ifr{ background-color: transparent; }
+ul, ol, dl{ list-style: none; margin-bottom:0; }
+img{ border: 0; vertical-align: middle; }
+table{ border: 0; padding: 0; border-collapse: collapse; border-spacing: 0; }
+th, td{ padding: 0; }
+input{ outline: none; }
+input[type=checkbox]{ width: 13px; height: 13px; vertical-align: middle; }
+input[type=radio]{ width: 13px; height: 13px; vertical-align: middle; }
+input[type=button]{ vertical-align: middle; }
+input[type=file]{ vertical-align: middle; }
+select{ height: 20px; margin: 0; vertical-align: middle; border-top: 1px #909090 solid; border-right: 1px #c0c0c0 solid; border-bottom: 1px #c0c0c0 solid; border-left: 1px #909090 solid; outline: none; }
+textarea{ border-top: 1px #909090 solid; border-right: 1px #c0c0c0 solid; border-bottom: 1px #c0c0c0 solid; border-left: 1px #909090 solid; padding: 2px; vertical-align: middle; outline: none; overflow: auto; }
+.multisel{ border-top: 1px #909090 solid; border-right: 1px #c0c0c0 solid; border-bottom: 1px #c0c0c0 solid; border-left: 1px #909090 solid; vertical-align: middle; outline: none; }
+input[disabled], select[disabled], textarea[disabled]{ background-color: #ddd; opacity: 0.5; }
+a, a img, map{ cursor: pointer; }
+iframe{ overflow: hidden; }
+button{ vertical-align: middle; border: 0; cursor: pointer; outline: none; background:transparent; }
+
+
+svg{}
+
+.tiscreen_dashboard{ min-width:1600px; }
+
+.header{ padding:5px; }
+.header > .inner{ height:42px; border:1px #000 solid; box-sizing:border-box; position:relative; 
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#5a71a7+0,355088+25,22407f+50,163576+50,163576+50,194087+100 */
+background: rgb(85,117,177); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(85,117,177,1) 0%, rgba(45,82,145,1) 25%, rgba(24,66,136,1) 50%, rgba(12,54,126,1) 50%, rgba(14,67,146,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(85,117,177,1) 0%,rgba(45,82,145,1) 25%,rgba(24,66,136,1) 50%,rgba(12,54,126,1) 50%,rgba(14,67,146,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(85,117,177,1) 0%,rgba(45,82,145,1) 25%,rgba(24,66,136,1) 50%,rgba(12,54,126,1) 50%,rgba(14,67,146,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a71a7', endColorstr='#194087',GradientType=0 ); /* IE6-9 */}
+
+.header h1{ margin:0; font-size:11px; position:absolute; top:5px; left:15px; }
+.header h1 img{ width:150px; height:26px; }
+.header .dl_bx{ position:absolute; top:8px; }
+.header .dl_bx dl{ overflow:hidden; display:block; margin:0; }
+.header .dl_bx dl dt{ color:#a8c7f2; font-size:11px; font-weight:bold; height:24px; line-height:24px; float:left; padding:0 5px 0 0; overflow:hidden; box-sizing:border-box; }
+.header .dl_bx dl dt span.icon{ display:inline-block; width:22px; height: 24px; line-height:1em; vertical-align:top; background:no-repeat left; }
+.header .dl_bx dl dd{ background-color: #07121d; height:24px; float:left; overflow:hidden; border:1px #000 solid; border-bottom-color:#456299; box-sizing:border-box; position:relative;}
+
+.header .notice{ left:250px; width:40%; }
+.header .notice dl dt span.icon{ background:url(../../images/tiscreen/icon_notice.svg) no-repeat left; }
+.header .notice dl dd{ width:80%; }
+.header .notice dl dd ul{ position:absolute; padding:0 10px; box-sizing:border-box; }
+.header .notice dl dd ul li{ float:left;color:#5693f7; display:block; padding-right:20px; }
+
+.header .current_time{ top:8px; right:120px; min-width:240px; }
+.header .current_time dl dt span.icon{ background:url(../../images/tiscreen/icon_clock.svg) no-repeat left; }
+.header .current_time dl dd{ width:150px; }
+.header .current_time dl dd span{ color:#5693f7; font-family:Roboto, Arial; letter-spacing:0; font-size:14px; text-align: center; display:block; line-height:22px; }
+
+
+.header .util{ position:absolute; top:10px; right:15px;}
+.header .util ul{ overflow:hidden; }
+.header .util ul li{  float:left; border:1px #112342 solid; border-right-width:0; border-bottom-color:#456299; box-sizing:border-box; line-height:18px; height:20px;
+background: rgb(90,113,167); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(78,98,129,1) 0%, rgba(46,64,105,1) 50%, rgba(25,45,87,1) 50%, rgba(25,46,90,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(78,98,129,1) 0%, rgba(46,64,105,1) 50%,rgba(25,45,87,1) 50%, rgba(25,46,90,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(78,98,129,1) 0%, rgba(46,64,105,1) 50%,  rgba(25,45,87,1) 50%,rgba(25,46,90,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a71a7', endColorstr='#194087',GradientType=0 ); }
+.header .util ul li:last-child{ border-right-width:1px; }
+.header .util ul li button{ width:36px; height:18px; overflow:hidden; background:url(../../images/tiscreen/icon_setting.svg) no-repeat center; vertical-align: baseline; }
+.header .util ul li button img{ width:36px; height:18px; }
+.header .util ul li button.reload{ background-image: url(../../images/tiscreen/icon_reload.svg); }
+.header .util ul li button.setting{ background-image: url(../../images/tiscreen/icon_screen.svg);}
+.header .util ul li button.close{ background-image: url(../../images/tiscreen/icon_close2.svg); }
+
+
+.grid-stack{ margin:0 2.5px; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content{ background-color: #08111a; border:1px #000 solid; box-sizing:border-box; left:2.5px; right:2.5px; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header{ padding:10px; position:relative;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3b4966+0,3b4966+100&1+0,0.3+40,0+80 */
+background: -moz-linear-gradient(top,  rgba(59,73,102,1) 0%, rgba(59,73,102,0.3) 30%, rgba(59,73,102,0) 70%, rgba(59,73,102,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(59,73,102,1) 0%,rgba(59,73,102,0.3) 30%,rgba(59,73,102,0) 70%,rgba(59,73,102,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(59,73,102,1) 0%,rgba(59,73,102,0.3) 30%,rgba(59,73,102,0) 70%,rgba(59,73,102,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b4966', endColorstr='#003b4966',GradientType=0 ); /* IE6-9 */
+}
+
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header > h2{ color:#4e94fe; font-size:1em; font-weight:bold; margin:0; line-height:15px; float:left; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header > .monitoring_time{ float:left; opacity:0.5; font-size:11px; font-family:Roboto, Arial; letter-spacing:0; padding:0 0 0 10px; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul{ position:absolute; top:10px; right:10px; margin:0; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul li{ float:left; padding:0 0 0 5px; line-height:14px; font-size:0; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul li button{ width:14px; height:14px; box-sizing:border-box; padding:2px; background:url(../../images/tiscreen/icon_setting.svg) no-repeat; background-size: 96%; }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul li button.setting{}
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul li button.close{ background-image: url(../../images/tiscreen/icon_close.svg); }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul li button > svg{ fill:#27303a; width:10px; height:10px; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
