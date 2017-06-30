@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="wrap" id="${tiContainerId}"></div>
+<div class="grid-stack-item-content-container" id="${tiContainerId}"></div>
 
 <script type="text/javascript">
   var initialize = function() {

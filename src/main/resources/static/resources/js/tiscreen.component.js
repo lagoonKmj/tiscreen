@@ -6,14 +6,15 @@
      */
     var $opts = $.extend({}, $.fn.tiComponent.defaults, options);
     var $tiComponent = $($opts.tiComponentId), $currentTarget = $tiComponent.parent();
-    var objParam = null;
+    var $tiContainer = $($opts.tiContainerId);
+    var isNodata = false;
     /**
      * new _component
      */
     var _component = function() {
       //Checked Required
       if (!tiCommon.convertToBoolean($opts.title)) {
-        console.error("[ERROR] title 필수 옵션!!!");
+        console.warn("[ERROR] title 필수 옵션!!!");
       }
     };
     /**
@@ -48,13 +49,24 @@
           return $opts.tiContainerId;
         },
         getWidth : function() {
-          return $($opts.tiComponentId).width();	
+          return $tiComponent.width();	
         },
         getHeight : function() {
-          return $($opts.tiComponentId).height() - 35;
+          return $tiComponent.height() - 35;
         },
         refresh : function() {
           _innerMethod.refresh();
+        }, 
+        setNodata : function() {
+          var strHtml = "<div class='no_data_content'>";
+          strHtml += "     <span class='icon'></span>";
+          strHtml += "     <span class='text'>" + $opts.nodataMessage + "</span>";
+          strHtml += "   </div>";
+          $tiContainer.addClass("no_data").append(strHtml);
+          isNodata = true;
+        },
+        getNodataStatus : function() {
+          return isNodata;
         }
     };
     
@@ -76,7 +88,7 @@
           strHtml += "        </li>";
           strHtml += "     </ul>";
           strHtml += "</div>";
-          $($opts.tiContainerId).before(strHtml);
+          $tiContainer.before(strHtml);
         },
         //Set Para
         setPara : function() {
@@ -100,7 +112,7 @@
         setEventListener : function() {
           ($opts.isLog) ? console.log("5. 이벤트 설정 : 삭제, 설정, 리사이즈") : "";
           //클릭
-          $($opts.tiComponentId).on("click", function(event) {
+          $tiComponent.on("click", function(event) {
             var $target = $(event.target);
             if ($target.is(".close")) {
               grid.removeWidget($currentTarget);
@@ -120,7 +132,7 @@
               setTimeout(function() {
                 var divWidth = _component.prototype.getWidth();
                 var divHeight = _component.prototype.getHeight();
-                var chart = $($opts.tiContainerId).highcharts();
+                var chart = $tiContainer.highcharts();
                 chart.setSize(divWidth, divHeight, true);
                 chart.reflow();
               }, 300);
@@ -177,6 +189,7 @@
       maxHeight : 8,
       maxWidth : 8,
       isLog : true,
-      isHighCharts : false 
+      isHighCharts : false,
+      nodataMessage : "No data"
   };
 })(jQuery);

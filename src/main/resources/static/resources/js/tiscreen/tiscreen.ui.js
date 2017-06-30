@@ -10,6 +10,9 @@ $(document).ready(function(){
 	setTime();
 	setInterval("setTime()", 1000);
 	
+	//No data
+	//$(".no_data").html("<div><span class='icon'></span><span class='text'>No data</span></div>");
+	
 
 });
 

@@ -54,7 +54,7 @@ $(function () {
       "maxHeight" : 8 
   };
   
-  var tiComp = [ "ti.bar", "ti.grid", "ti.hitmap", "ti.line", "ti.pie", "ti.tree", "ti.radar" ];
+  var tiComp = [ "ti.bar", "ti.grid", "ti.hitmap", "ti.line", "ti.pie", "ti.tree", "ti.radar", "ti.nodata" ];
   var numTiComponent = 0;
   
   var initialize = function() {
@@ -159,10 +159,10 @@ $(function () {
         node.maxHeight,
         nodeId
         );
-    var name = tiComp[tiCommon.randomRange(0, 5)];
+    var name = tiComp[tiCommon.randomRange(0, 6)];
     $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, 
       "numTiComponent" : numTiComponent, "name": name, 
-      "title" : "Test Component(" + name + "," + numTiComponent + ")"});
+      "title" : "ID : " + tiComponentId + ", Class : " + name});
 
     numTiComponent++;
   };
