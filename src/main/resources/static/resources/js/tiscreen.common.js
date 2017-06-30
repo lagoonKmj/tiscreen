@@ -36,22 +36,6 @@ var tiCommon = {
     }
     return true;
   },
-  convertToUnit : function(value, point, isByte) {
-    var units = ["B", "KB", "MB", "GB", "TB", "PB"];
-    if (value === 0) {
-      return "0 B";
-    }
-    if (point === undefined) {
-      point = 2;
-    }
-    if (isByte === undefined) {
-      isByte = true;
-    }
-    var num = (isByte) ? 1024 : 1000;
-    var i = parseInt(Math.floor(Math.log(value) / Math.log(num)));
-    var result = (value / Math.pow(num, i)).toFixed(point);
-    return result + " " + units[i];
-  },
   isFunction : function(callback) {
     return (callback != undefined && typeof callback == "function");
   },
@@ -79,4 +63,11 @@ var tiCommon = {
   getSessionStorage : function(key) {
     return sessionStorage[key];
   },
+  randomRange : function(n1, n2) {
+    return Math.floor( (Math.random() * (n2 - n1 + 1)) + n1 );
+  },
+  deepCopy : function(value) {
+    return $.extend({}, value);
+  }
+  
 }

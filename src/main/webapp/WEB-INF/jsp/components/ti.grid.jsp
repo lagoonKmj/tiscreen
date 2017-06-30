@@ -14,7 +14,7 @@
       minWidth : 2, 
       minHeight : 2, 
       maxWidth : 8, 
-      maxHeight : 8 
+      maxHeight : 8
     });
     tiComponentItems[tiComponentId].initialize();
   };
@@ -31,10 +31,12 @@
         chart: {
             type: 'pie',
             width: divWidth,
-            height: divHeight
+            height: divHeight,
+            backgroundColor: "black"
         },
         title: {
-            text: 'Browser market shares. January, 2015 to May, 2015'
+            text: 'Browser market shares. January, 2015 to May, 2015',
+            style: { "color": "white", "fontSize": "18px" }
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
