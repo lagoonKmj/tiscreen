@@ -7,7 +7,7 @@
     var $opts = $.extend({}, $.fn.tiComponent.defaults, options);
     var $tiComponent = $($opts.tiComponentId), $currentTarget = $tiComponent.parent();
     var $tiContainer = $($opts.tiContainerId);
-    var isNodata = false;
+    var isNodata = false, headerAreaHeight = 35;
     /**
      * new _component
      */
@@ -51,11 +51,13 @@
         getTiContainerId : function() {
           return $opts.tiContainerId;
         },
-        getWidth : function() {
-          return $tiComponent.width();	
-        },
-        getHeight : function() {
-          return $tiComponent.height() - 35;
+        getRectangle : function() {
+          return {
+            "posX" : $tiComponent.offset().left,
+            "posY" : $tiComponent.offset().top,
+            "width" : $tiComponent.width(),
+            "height" : $tiComponent.height() - headerAreaHeight,
+          };
         },
         refresh : function() {
           _innerMethod.refresh();
@@ -148,10 +150,9 @@
             //하이차트 리사이즈 이벤트 처리(300ms 딜레이)
             if ($opts.isHighCharts) {
               setTimeout(function() {
-                var divWidth = _component.prototype.getWidth();
-                var divHeight = _component.prototype.getHeight();
+                var rect = _component.prototype.getRectangle();
                 var chart = $tiContainer.highcharts();
-                chart.setSize(divWidth, divHeight, true);
+                chart.setSize(rect.width, rect.height, true);
                 chart.reflow();
               }, 300);
             } else {
@@ -200,18 +201,18 @@
   };
   
   $.fn.tiComponent.defaults = {
-      tiComponentId : null,
-      tiContainerId : null,
-      title : null,
-      minHeight : 2,
-      minWidth : 2,
-      maxHeight : 8,
-      maxWidth : 8,
-      isLog : true,
-      isHighCharts : false,
-      nodataMessage : "No data",
-      url : null,
-      isConfig : false,
-      isInformation : false
+      tiComponentId : null, // 컴퍼넌트 ID 정의 (e.g : component_1)
+      tiContainerId : null, // 컨테이너 ID 정의 (e.g : container_1)
+      title : null, // 컴퍼넌트 타이틀 정의
+      minHeight : 2, // 컴퍼넌트 최소 높이 정의
+      minWidth : 2, // 컴퍼넌트 최소 넓이 정의
+      maxHeight : 8, // 컴퍼넌트 최대 높이 정의
+      maxWidth : 8, // 컴퍼넌트 최대 넓이 정의
+      isLog : true, // 콘솔로그 유무
+      isHighCharts : false, // 하이차트 유무
+      nodataMessage : "No data", // 데이터없을시 출력될 메세지
+      url : null, // Ajax 호출 URL
+      isConfig : false, // 설정기능 유무
+      isInformation : false // (타이틀영역 옆) 정보창 유무
   };
 })(jQuery);

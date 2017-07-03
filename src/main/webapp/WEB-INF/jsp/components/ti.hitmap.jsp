@@ -26,16 +26,15 @@
   
   var drawChart = function() {
     var $tiComponent = tiComponentItems["#" + "${tiComponentId}"];
-    var divWidth = $tiComponent.getWidth();
-    var divHeight = $tiComponent.getHeight();
+    var rect = $tiComponent.getRectangle();
     Highcharts.chart("${tiContainerId}", {
         chart: {
             type: 'heatmap',
             marginTop: 40,
             marginBottom: 80,
             plotBorderWidth: 1,
-            width: divWidth,
-            height: divHeight,
+            width: rect.width,
+            height: rect.height,
             backgroundColor: "black"
         },
         title: {

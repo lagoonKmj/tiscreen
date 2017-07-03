@@ -26,13 +26,12 @@
   
   var drawChart = function() {
     var $tiComponent = tiComponentItems["#" + "${tiComponentId}"];
-    var divWidth = $tiComponent.getWidth();
-    var divHeight = $tiComponent.getHeight();
-      Highcharts.chart("${tiContainerId}", {
+    var rect = $tiComponent.getRectangle();
+    Highcharts.chart("${tiContainerId}", {
         chart: {
           type: 'bar',
-          width: divWidth,
-          height: divHeight,
+          width: rect.width,
+          height: rect.height,
           backgroundColor: "black"
       },
       title: {

@@ -26,13 +26,12 @@
   
   var drawChart = function() {
     var $tiComponent = tiComponentItems["#" + "${tiComponentId}"];
-    var divWidth = $tiComponent.getWidth();
-    var divHeight = $tiComponent.getHeight();
+    var rect = $tiComponent.getRectangle();
     Highcharts.chart("${tiContainerId}", {
         chart: {
-            width: divWidth,
-            height: divHeight,
-            backgroundColor: "black"
+          width: rect.width,
+          height: rect.height,
+          backgroundColor: "black"
         },
         title: {
           text: 'Solar Employment Growth by Sector, 2010-2016',
