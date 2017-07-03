@@ -16,6 +16,9 @@
       if (!tiCommon.convertToBoolean($opts.title)) {
         console.warn("[ERROR] title 필수 옵션!!!");
       }
+      if (!tiCommon.convertToBoolean($opts.url)) {
+        console.warn("[ERROR] url 필수 옵션!!!");
+      }
     };
     /**
      * 외부 함수
@@ -34,13 +37,13 @@
             grid.minHeight($currentTarget, $opts.minHeight);
           }
           //헤더 추가
-          _innerMethod.appendCommonTag();
+          _innerMethod.appendHeaderTag();
           //파라미터 셋
           _innerMethod.setPara();
-          //이벤트 리스너
+          //이벤트 리스너 셋
           _innerMethod.setEventListener();
-          //준비완료
-          _innerMethod.ready();
+          //데이터 겟
+          _innerMethod.getData();
         },
         getTiComponentId : function() {
           return $opts.tiComponentId;
@@ -58,12 +61,20 @@
           _innerMethod.refresh();
         }, 
         setNodata : function() {
-          var strHtml = "<div class='no_data_content'>";
-          strHtml += "     <span class='icon'></span>";
-          strHtml += "     <span class='text'>" + $opts.nodataMessage + "</span>";
-          strHtml += "   </div>";
-          $tiContainer.addClass("no_data").append(strHtml);
-          isNodata = true;
+          if (isNodata) {
+            var $taget = $(".no_data_content");
+            if ($taget.length > 0) {
+              $taget.remove();
+            }
+          } else {
+            var strHtml = "<div class='no_data_content'>";
+            strHtml += "     <span class='icon'></span>";
+            strHtml += "     <span class='text'>" + $opts.nodataMessage + "</span>";
+            strHtml += "   </div>";
+            $tiContainer.addClass("no_data").append(strHtml);
+          }
+          isNodata = !isNodata;  
+          
         },
         getNodataStatus : function() {
           return isNodata;
@@ -74,15 +85,19 @@
      * 내부 함수
      */
     var _innerMethod = {
-        //Append common tag
-        appendCommonTag : function() {
+        //Append Header tag
+        appendHeaderTag : function() {
           var strHtml = "<div class='grid-stack-item-content-header'>";
           strHtml += "     <h2>Title...</h2>";
-          strHtml += "     <span class='monitoring_time'>2017-06-20 12:00:00 ~2017-06:21 12:00:00</span>";
+          if ($opts.isInformation) {
+            strHtml += "     <span class='monitoring_time'>2017-06-20 12:00:00 ~2017-06:21 12:00:00</span>";
+          }
           strHtml += "     <ul>";
-          strHtml += "     		<li>";
-          strHtml += "     		  <button type='button' title='설정' class='setting'><span class='icon'></span></button>";
-          strHtml += "        </li>";
+          if ($opts.isConfig) {
+            strHtml += "     		<li>";
+            strHtml += "     		  <button type='button' title='설정' class='setting'><span class='icon'></span></button>";
+            strHtml += "        </li>";
+          }
           strHtml += "     		<li>";
           strHtml += "          <button type='button' title='닫기' class='close'><span class='icon'></span></button>";
           strHtml += "        </li>";
@@ -121,8 +136,11 @@
               ($opts.isLog) ? console.log("99. 컴포넌트 삭제. id : " + $opts.tiComponentId + ", name : " + $opts.title) : "";
             }
             if ($target.is(".setting")) {
-              console.log("설정");
-              _innerMethod.refresh();
+              if (typeof onConfig === "function") {
+                onConfig(_innerMethod.getTiComponentItem());
+              } else {
+                console.warn("[INFO] onConfig() 함수를 정의 및 구현 하십시요.");
+              }
             }
           });
           //리사이즈
@@ -161,18 +179,19 @@
             console.warn("[INFO] refresh() 함수를 정의 및 구현 하십시요.");
           }
         },
-        //준비완료
-        ready : function() { 
+        //데이터 가져오기
+        getData : function() {
           if (typeof ready === "function") {
             ($opts.isLog) ? console.log("7. 티컴포넌트 설정 완료.") : "";
             ready(_innerMethod.getTiComponentItem());
           } else {
             console.warn("[ERROR] ready() 함수를 정의 및 구현 하십시요.");
           }
+            
           ($opts.isLog) ? console.log("################################################ END") : "";
         },
         //TiComponent Item
-        getTiComponentItem : function() {
+        getTiComponentItem : function() {$opts.url
           return tiComponentItems[$opts.tiComponentId];
         }
     }
@@ -184,12 +203,15 @@
       tiComponentId : null,
       tiContainerId : null,
       title : null,
-      minHeight : 3,
-      minWidth : 3,
+      minHeight : 2,
+      minWidth : 2,
       maxHeight : 8,
       maxWidth : 8,
       isLog : true,
       isHighCharts : false,
-      nodataMessage : "No data"
+      nodataMessage : "No data",
+      url : null,
+      isConfig : false,
+      isInformation : false
   };
 })(jQuery);

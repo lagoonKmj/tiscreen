@@ -1,12 +1,16 @@
 package com.piolink.ts.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.piolink.ts.utils.JsonUtils;
 
 /**
  * @author lagoon
@@ -33,5 +37,23 @@ public class TiScreenController {
         map.put("tiContainerId", "container_" + map.get("numTiComponent"));
         mv.addAllObjects(map);
         return mv;
+    }
+    
+    @RequestMapping(value = "/getData.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String getData(@RequestParam Map<String, Object> map) {
+        
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total_elements", 1);
+        resultMap.put("content", "lagoon");
+        return JsonUtils.toJson(resultMap);
+    }
+
+    @RequestMapping(value = "/getNodata.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String getNodata(@RequestParam Map<String, Object> map) {
+        
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total_elements", 0);
+        resultMap.put("content", "");
+        return JsonUtils.toJson(resultMap);
     }
 }

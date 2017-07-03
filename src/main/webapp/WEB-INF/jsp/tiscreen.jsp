@@ -159,7 +159,7 @@ $(function () {
         node.maxHeight,
         nodeId
         );
-    var name = tiComp[tiCommon.randomRange(0, 6)];
+    var name = tiComp[tiCommon.randomRange(0, 7)];
     $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, 
       "numTiComponent" : numTiComponent, "name": name, 
       "title" : "ID : " + tiComponentId + ", Class : " + name});

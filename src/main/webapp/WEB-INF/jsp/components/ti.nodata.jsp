@@ -14,7 +14,10 @@
       minWidth : 2, 
       minHeight : 2, 
       maxWidth : 8, 
-      maxHeight : 8
+      maxHeight : 8,
+      url : "/getData.json",
+      isConfig : true,
+      isInformation : true
     });
     tiComponentItems[tiComponentId].initialize();
   };
@@ -37,7 +40,7 @@
     var isNodata = $tiComponent.getNodataStatus(); //현재 상황 가져오기
     if (isNodata) { //No data 진행중
       if (false) {   //데이터 존재
-        //1. No data 영역 삭제
+        $tiComponent.setNodata(); //1. No data 영역 삭제
         //2. TODO 구현
       } //else { 무시 }  
     } else {        //컨텐츠 진행중
