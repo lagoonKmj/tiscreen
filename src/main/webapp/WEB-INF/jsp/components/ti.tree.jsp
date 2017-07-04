@@ -11,10 +11,7 @@
       tiComponentId : tiComponentId,
       tiContainerId : tiContainerId,
       title : "${title}",
-      minWidth : 2, 
-      minHeight : 2, 
-      maxWidth : 8, 
-      maxHeight : 8
+      url : "/getData.json"
     });
     tiComponentItems[tiComponentId].initialize();
   };

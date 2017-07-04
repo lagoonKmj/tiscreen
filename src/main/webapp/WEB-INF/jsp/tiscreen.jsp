@@ -33,6 +33,8 @@ var tiComponentItems = new Object();
 var tiScreenType = 0; // 0 : gridstack dashboard, 1 : previous dashboard   
 
 $(function () {
+
+  console.log("%cTiScreen", "font:8em Arial;color:#EC6521;font-weight:bold");
   
   var options = {
       float: false,
