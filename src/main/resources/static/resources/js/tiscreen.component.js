@@ -26,7 +26,7 @@
     _component.prototype = {
         //Initialize
         initialize : function() {
-          ($opts.isLog) ? console.log("################################################ START") : "";
+          ($opts.isLog) ? console.log("%cSTART{", "font:1em Arial;color:#EC6521;font-weight:bold") : "";
           ($opts.isLog) ? console.log("1. 티컴포넌트 생성  ID: " + $opts.tiComponentId) : "";
           //gird 옵션 재정의
           ($opts.isLog) ? console.log("2. 최대넓이 : " + $opts.maxWidth + ", 최대높이 : " + $opts.maxHeight + ", 최소넓이 : " + $opts.minWidth + ", 최소높이 : " + $opts.minHeight) : "";
@@ -189,7 +189,7 @@
             console.warn("[ERROR] ready() 함수를 정의 및 구현 하십시요.");
           }
             
-          ($opts.isLog) ? console.log("################################################ END") : "";
+          ($opts.isLog) ? console.log("%c} END", "font:1em Arial;color:#EC6521;font-weight:bold") : "";
         },
         //TiComponent Item
         getTiComponentItem : function() {$opts.url
@@ -208,7 +208,7 @@
       minWidth : 2, // 컴퍼넌트 최소 넓이 정의
       maxHeight : 8, // 컴퍼넌트 최대 높이 정의
       maxWidth : 8, // 컴퍼넌트 최대 넓이 정의
-      isLog : true, // 콘솔로그 유무
+      isLog : false, // 콘솔로그 유무
       isHighCharts : false, // 하이차트 유무
       nodataMessage : "No data", // 데이터없을시 출력될 메세지
       url : null, // Ajax 호출 URL
