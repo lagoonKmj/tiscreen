@@ -2,18 +2,13 @@ package com.piolink.ts.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 
 @Entity(name = "conf_dashboard_component_para")
 public class DashboardComponentPara extends AbstractEntity  {
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "component_id", referencedColumnName = "id")
-    private DashboardComponent dashboardComponent;
-
-    private Integer componentId;
     private String paraValue1;
     private String paraValue2;
     private String paraValue3;
@@ -23,18 +18,6 @@ public class DashboardComponentPara extends AbstractEntity  {
 
     public DashboardComponentPara() {
         super();
-    }
-
-    public DashboardComponent getDashboardComponent() {
-        return dashboardComponent;
-    }
-
-    public Integer getComponentId() {
-        return componentId;
-    }
-
-    public void setComponentId(Integer componentId) {
-        this.componentId = componentId;
     }
 
     public String getParaValue1() {

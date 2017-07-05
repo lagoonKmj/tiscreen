@@ -2,17 +2,17 @@ package com.piolink.ts.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 
 @Entity(name = "conf_dashboard_component")
 public class DashboardComponent extends AbstractEntity  {
-
-    @ManyToOne(optional = false)
+    
+    @OneToOne(optional = false)
     @JoinColumn(name = "id", referencedColumnName = "component_id")
-    private UserDashboardComponent userDashboardComponent;
-
+    private DashboardComponentPara dashboardComponentPara;
+    
     private String name;
     private String description;
     private Integer minWidth;
@@ -26,10 +26,6 @@ public class DashboardComponent extends AbstractEntity  {
 
     public DashboardComponent() {
         super();
-    }
-
-    public UserDashboardComponent getUserDashboardComponent() {
-        return userDashboardComponent;
     }
 
     public String getName() {
@@ -110,5 +106,9 @@ public class DashboardComponent extends AbstractEntity  {
 
     public void setIsUse(String isUse) {
         this.isUse = isUse;
+    }
+
+    public DashboardComponentPara getDashboardComponentPara() {
+        return dashboardComponentPara;
     }
 }

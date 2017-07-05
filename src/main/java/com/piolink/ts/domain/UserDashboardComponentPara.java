@@ -9,11 +9,6 @@ import com.piolink.ts.dbproxy.AbstractEntity;
 @Entity(name = "conf_user_dashboard_component_para")
 public class UserDashboardComponentPara extends AbstractEntity  {
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "component_id", referencedColumnName = "id")
-    private UserDashboardComponent userDashboardComponent;
-
-    private Integer componentId;
     private String paraValue1;
     private String paraValue2;
     private String paraValue3;
@@ -23,18 +18,6 @@ public class UserDashboardComponentPara extends AbstractEntity  {
 
     public UserDashboardComponentPara() {
         super();
-    }
-
-    public UserDashboardComponent getUserDashboardComponent() {
-        return userDashboardComponent;
-    }
-
-    public Integer getComponentId() {
-        return componentId;
-    }
-
-    public void setComponentId(Integer componentId) {
-        this.componentId = componentId;
     }
 
     public String getParaValue1() {

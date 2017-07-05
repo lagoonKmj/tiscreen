@@ -3,6 +3,7 @@ package com.piolink.ts.domain;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 
@@ -11,7 +12,15 @@ public class UserDashboardComponent extends AbstractEntity  {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "dashboard_id", referencedColumnName = "id")
-    private UserDashboard userDashboard;
+    public UserDashboard userDashboard;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "component_id", referencedColumnName = "id")
+    private DashboardComponent dashboardComponent;
+    
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id", referencedColumnName = "component_id")
+    private UserDashboardComponentPara userDashboardComponentPara;
 
     private Integer posX;
     private Integer posY;
@@ -22,10 +31,6 @@ public class UserDashboardComponent extends AbstractEntity  {
 
     public UserDashboardComponent() {
         super();
-    }
-
-    public UserDashboard getUserDashboard() {
-        return userDashboard;
     }
 
     public Integer getPosX() {
@@ -74,5 +79,13 @@ public class UserDashboardComponent extends AbstractEntity  {
 
     public void setIsUse(String isUse) {
         this.isUse = isUse;
+    }
+
+    public DashboardComponent getDashboardComponent() {
+        return dashboardComponent;
+    }
+
+    public UserDashboardComponentPara getUserDashboardComponentPara() {
+        return userDashboardComponentPara;
     }
 }
