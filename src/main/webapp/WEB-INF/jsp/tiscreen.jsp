@@ -31,6 +31,7 @@
 
 var tiComponentItems = new Object(); 
 var tiScreenType = 0; // 0 : gridstack dashboard, 1 : previous dashboard   
+var dashboardComponents;
 
 $(function () {
 
@@ -49,20 +50,41 @@ $(function () {
       "y" : 0, 
       "width" : 4, 
       "height" : 3, 
-      "autoPosition" : true, 
-      "minWidth" : 3, 
-      "maxWidth" : 8, 
-      "minHeight" : 2, 
-      "maxHeight" : 8 
+      "auto_position" : true,
+      "min_width" : 3, 
+      "max_width" : 8, 
+      "min_height" : 2, 
+      "max_height" : 8
   };
   
   var tiComp = [ "ti.bar", "ti.grid", "ti.hitmap", "ti.line", "ti.pie", "ti.tree", "ti.radar", "ti.nodata" ];
   var numTiComponent = 0;
   
   var initialize = function() {
+    dashboardComponents = ${dashboardComponents}; 
+    setDashboard();
     setEventListener();
     setTiscreen();
   };
+  
+  var setDashboard = function() {
+    $(dashboardComponents).each(function(idx, element) {
+      var $html = $("<li><a>" + element.name + "</a></li>").addClass("dashboardComponent").data("class-item", element);
+    	if (element.division == 1) {
+    	  ($("#compCommon").css("display") == "none") ? $("#compCommon").show() : "";
+    	  $("#compCommon ul").append($html);
+    	} else if (element.division == 2) {
+    	  ($("#compNetwork").css("display") == "none") ? $("#compNetwork").show() : "";
+    	  $("#compNetwork ul").append($html);
+    	} else if (element.division == 3) {
+    	  ($("#compTimatrix").css("display") == "none") ? $("#compTimatrix").show() : "";
+    	  $("#compTimatrix ul").append($html);
+    	} else if (element.division == 4) {
+    	  ($("#compNdm").css("display") == "none") ? $("#compNdm").show() : "";
+    	  $("#compNdm ul").append($html);
+    	}
+    });
+  }
   
   var setTiscreen = function() {
     var $tiscreen = $("#tiscreen");
@@ -137,6 +159,15 @@ $(function () {
       tiScreenType = (tiScreenType == 0) ? 1 : 0;
       setTiscreen();
     });
+    $(".dashboardComponent").on("click", function() {
+      var node = $(this).data("class-item");
+      node.x = 0, 
+      node.y = 0, 
+      node.width = 4, 
+      node.height = 3, 
+      node.auto_position = true
+      addTiComponent(node);
+    });
   }
   
   var addTiComponent = function(node) {
@@ -154,14 +185,20 @@ $(function () {
         node.y, 
         node.width, 
         node.height,
-        node.autoPosition,
-        node.minWidth,
-        node.maxWidth,
-        node.minHeight,
-        node.maxHeight,
+        node.auto_position,
+        node.min_width,
+        node.max_width,
+        node.min_height,
+        node.max_height,
         nodeId
         );
-    var name = tiComp[tiCommon.randomRange(0, 7)];
+    var name = "";
+    console.log(node);
+    if (node.hasOwnProperty("class_name")) {
+      name = node.class_name; 
+    } else {
+      name = tiComp[tiCommon.randomRange(0, 7)];;
+    }
     $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, 
       "numTiComponent" : numTiComponent, "name": name, 
       "title" : "ID : " + tiComponentId + ", Class : " + name});
@@ -221,7 +258,7 @@ $(function () {
         <dt>대시보드 설정</dt>
         <!-- 대시보드 선택 -->
         <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">네트워크 모니터링<span class="caret"></span></button>
-          <div class="dropdown_layer">
+          <div class="dropdown_layer" id="selectDashboard">
             <ul>
               <li><a href="#">통합 대시보드</a></li>
               <li><a class="label">기본 대시보드</a>
@@ -249,27 +286,19 @@ $(function () {
         <dd class="bar">|</dd>
         <!-- 컴포넌트 추가 -->
         <dd class="dropdown"><button type="button" title="컴포넌트 추가" class="dropdown_toggle add_component"><span class="icon"></span><span class="txt">컴포넌트 추가</span><span class="caret"></span></button>
-          <div class="dropdown_layer">
+          <div class="dropdown_layer" id="selectComponent">
             <ul>
-              <li><a class="label">예제</a>
-                <ul>
-                  <li><a href="#">No data</a></li>
-                </ul>
+              <li id="compCommon" style="display: none;"><a class="label">공통</a>
+                <ul></ul>
               </li>
-              <li><a class="label">차트</a>
-                <ul>
-                  <li><a href="#">파이</a></li>
-                  <li><a href="#">라인</a></li>
-                  <li><a href="#">바</a></li>
-                  <li><a href="#">히트맵</a></li>
-                  <li><a href="#">레이더</a></li>
-                </ul>
+              <li id="compNetwork" style="display: none;"><a class="label">장비</a>
+                <ul></ul>
               </li>
-              <li><a class="label">그외</a>
-                <ul>
-                  <li><a href="#">테이블</a></li>
-                  <li><a href="#">트리</a></li>
-                </ul>
+              <li id="compTimatrix" style="display: none;"><a class="label">보안</a>
+                <ul></ul>
+              </li>
+              <li id="compNdm" style="display: none;"><a class="label">NDM</a>
+                <ul></ul>
               </li>
             </ul>
           </div>

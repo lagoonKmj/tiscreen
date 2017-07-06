@@ -130,7 +130,7 @@
           ($opts.isLog) ? console.log("5. 이벤트 설정 : 삭제, 설정, 리사이즈") : "";
           //클릭
           $tiComponent.on("click", function(event) {
-            var $target = $(event.target);
+            var $target = $(event.target).parent();
             if ($target.is(".close")) {
               grid.removeWidget($currentTarget);
               _innerMethod.removeEventListener();

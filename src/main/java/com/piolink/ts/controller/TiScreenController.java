@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.piolink.ts.domain.DashboardComponent;
 import com.piolink.ts.service.DashboardComponentService;
 import com.piolink.ts.utils.JsonUtils;
 
@@ -25,7 +26,11 @@ public class TiScreenController {
     
     @RequestMapping(value = "/tiscreen.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView tiscreen(@RequestParam Map<String, Object> map) {
+        
+        //컴포넌트 가져오기
+        Iterable<DashboardComponent> dashboardComponents = dashboardComponentService.findAll();
         ModelAndView mv = new ModelAndView("/tiscreen");
+        mv.addObject("dashboardComponents", JsonUtils.toJson(dashboardComponents));
         return mv;
     }
 
@@ -53,5 +58,12 @@ public class TiScreenController {
         resultMap.put("total_elements", 0);
         resultMap.put("content", "");
         return JsonUtils.toJson(resultMap);
+    }
+    
+    @RequestMapping(value = "/getDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String getDashboardComponent(@RequestParam Map<String, Object> map) {
+        
+        Iterable<DashboardComponent> dashboardComponents = dashboardComponentService.findAll();
+        return JsonUtils.toJson(dashboardComponents);
     }
 }

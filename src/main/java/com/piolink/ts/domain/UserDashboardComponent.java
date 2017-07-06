@@ -1,6 +1,8 @@
 package com.piolink.ts.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -18,7 +20,7 @@ public class UserDashboardComponent extends AbstractEntity  {
     @JoinColumn(name = "component_id", referencedColumnName = "id")
     private DashboardComponent dashboardComponent;
     
-    @OneToOne(optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
     @JoinColumn(name = "id", referencedColumnName = "component_id")
     private UserDashboardComponentPara userDashboardComponentPara;
 

@@ -1,8 +1,6 @@
 package com.piolink.ts.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 

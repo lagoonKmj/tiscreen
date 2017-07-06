@@ -16,9 +16,9 @@ $(document).ready(function(){
  
 	
 	//메뉴 드롭다운
-	$( ".dashboard_setting" ).on( "click", function() {
+//	$( ".dashboard_setting" ).on( "click", function() {
 		runEffect();
-	});
+//	});
 	
 	$(".dropdown_toggle").on("click", function(){
 		if(!$(this).closest().hasClass("disabled")){
