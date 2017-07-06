@@ -19,12 +19,20 @@ textarea{ border-top: 1px #909090 solid; border-right: 1px #c0c0c0 solid; border
 input[disabled], select[disabled], textarea[disabled]{ background-color: #ddd; opacity: 0.5; }
 a, a img, map{ cursor: pointer; }
 iframe{ overflow: hidden; }
-button{ vertical-align: middle; border: 0; cursor: pointer; outline: none; background:transparent; }
+button{ vertical-align: middle; border: 0; cursor: pointer; outline: none; background:transparent; line-height:1em; }
+button span{ display:inline-block; vertical-align:middle; background-repeat:no-repeat; line-height:1em; }
+button span.icon{ width:12px; height:12px; }
+
+html{ scrollbar-3dLight-Color: #004176; scrollbar-arrow-color: #004176; scrollbar-base-color: #004176; scrollbar-Face-Color: #004176; scrollbar-Track-Color: #000e1a; scrollbar-DarkShadow-Color: #004176; scrollbar-Highlight-Color: #004176; scrollbar-Shadow-Color: #004176 }
+
+::-webkit-scrollbar{ width: 8px; height: 8px; } 
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment{ display: block; height: 10px; background-color:#000e1a;}
+::-webkit-scrollbar-track{ background: #001221; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2) }
+::-webkit-scrollbar-thumb{ height: 50px; width: 50px; background: #004076; -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1) }
 
 
-svg{}
 
-.tiscreen_dashboard{ min-width:1600px; }
+.tiscreen_dashboard{ min-width:1600px; opacity:0; }
 
 .header{ padding:5px; padding-bottom:0; }
 .header > .inner{ height:42px; border:1px #000 solid; box-sizing:border-box; position:relative; 
@@ -56,9 +64,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a71a7', end
 .header .current_time dl dd span{ color:#5693f7; font-family:Roboto, Arial; letter-spacing:0; font-size:14px; text-align: center; display:block; line-height:22px; }
 
 
-.header .util{ position:absolute; top:10px; right:15px;}
+.header .util{ position:absolute; top:10px; right:15px; }
 .header .util ul{ overflow:hidden; }
-.header .util ul li{  float:left; border:1px #112342 solid; border-right-width:0; border-bottom-color:#456299; line-height:0;
+.header .util ul li{ float:left; border:1px #112342 solid; border-right-width:0; border-bottom-color:#456299; line-height:0;
 background: rgb(90,113,167); /* Old browsers */
 background: -moz-linear-gradient(top, rgba(78,98,129,1) 0%, rgba(46,64,105,1) 50%, rgba(25,45,87,1) 50%, rgba(25,46,90,1) 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(top, rgba(78,98,129,1) 0%, rgba(46,64,105,1) 50%,rgba(25,45,87,1) 50%, rgba(25,46,90,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -68,12 +76,49 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a71a7', end
 .header .util ul li button{ width:36px; height:18px; line-height:1em; vertical-align:baseline; }
 .header .util ul li button span.icon{ background:no-repeat center; display:block; width:100%; height:100%; }
 .header .util ul li button.reload span.icon{ background-image: url(../../images/tiscreen/icon_reload.svg); }
-.header .util ul li button.setting span.icon{ background-image: url(../../images/tiscreen/icon_screen.svg); }
+.header .util ul li button.dashboard_setting span.icon{ background-image: url(../../images/tiscreen/icon_screen.svg); }
 .header .util ul li button.close span.icon{ background-image: url(../../images/tiscreen/icon_close2.svg); }
 
 
+.dropdown{ position:relative; }
+.dropdown_toggle>span.caret{ display:inline-block; width:10px; height:10px; float:right; margin-left:5px; }
+.dropdown_toggle>span.caret:after{ content:'↓'; }
+.dropdown_layer{ position:absolute; display:none; z-index:9999; min-width:200px; background-color:#091016; }
+
+
+/* dashboard_control */
 .dashboard_control{ padding:5px; padding-top:0; }
-.dashboard_control .inner{ min-height:30px; border:1px #000 solid; border-top:0; box-sizing:border-box; position:relative; background-color:#142137; }
+.dashboard_control .inner{ min-height:36px; line-height:36px; border:1px #000 solid; border-top:0; position:relative; background-color:#0a1828; text-align:center; display:none; }
+.dashboard_control dl{ padding:5px 0; }
+.dashboard_control dl>dt{ display:inline-block; }
+.dashboard_control dl>dd{ display:inline-block; }
+.dashboard_control dl>dd.bar{ opacity:0.5; }
+.dashboard_control dl>dd>button{ border:1px #000 solid; height:22px; box-sizing:border-box; padding:0 0.8em; background-color:#205478; text-align:left; }
+.dashboard_control dl>dd>button:hover{ background-color:#205478; }
+.dashboard_control dl>dd.dashboard_name>button{ min-width:280px; height:26px; border:3px #205478 solid; background-color:#0a1828; color:#ddd; }
+.dashboard_control dl>dd.dashboard_name>button:hover{ }
+.dashboard_control dl>dd>button.add_component{ background-color:#0e5cbb; }
+.dashboard_control dl>dd>button>span.icon{ width:10px; height:10px; line-height:1em; margin-right:5px; }
+.dashboard_control dl>dd>button>span.txt{ display:inline-block; }
+.dashboard_control dl>dd>button.save_dashboard span.icon{ background-image: url(../../images/tiscreen/icon_save.svg); }
+.dashboard_control dl>dd>button.add_dashboard span.icon{ background-image: url(../../images/tiscreen/icon_add.svg); }
+.dashboard_control dl>dd>button.clone_dashboard span.icon{ background-image: url(../../images/tiscreen/icon_clone.svg); }
+.dashboard_control dl>dd>button.add_component span.icon{ background-image: url(../../images/tiscreen/icon_add.svg); }
+
+
+.dashboard_control dl>dd .dropdown_layer{ min-width:280px; background-color:#102738; border:1px #000 solid; text-align:left; box-sizing:border-box; }
+.dashboard_control dl>dd .dropdown_layer>ul{ padding:0; }
+.dashboard_control dl>dd .dropdown_layer>ul>li{ display:block; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>a{ display:block; color:#ddd; line-height:1.2; padding:5px 10px; text-decoration:none; }
+.dashboard_control dl>dd .dropdown_layer>ul>li a.label{ cursor:default; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul{ padding:0; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul>li{ display:block; position:relative; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul>li:hover{ background-color:#205478; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul>li>a{ display:block; color:#ddd; padding:5px 10px 5px 20px; text-decoration:none; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul>li .delete{ position:absolute; top:4px; right:10px; width:16px; height:16px; box-sizing:border-box; }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul>li .delete span.icon{ background-image: url(../../images/tiscreen/icon_delete.svg); }
+.dashboard_control dl>dd .dropdown_layer>ul>li>ul>li .delete:hover{ background-color:#000; }
+
 
 
 .grid-stack{ margin:0 2.5px; }
@@ -95,7 +140,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b4966', end
 .grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-header ul li button.close{ background-image: url(../../images/tiscreen/icon_close.svg); }
 
 
-.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-container{ padding:0px; /*background:#666;*/ }
+.grid-stack > .grid-stack-item > .grid-stack-item-content > .grid-stack-item-content-container{ padding:0; /*background:#666;*/ }
 
 
 /* no_data */

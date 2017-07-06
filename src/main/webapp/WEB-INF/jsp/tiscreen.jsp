@@ -66,8 +66,8 @@ $(function () {
   
   var setTiscreen = function() {
     var $tiscreen = $("#tiscreen");
-    if ($tiscreen.children().length > 2) {
-      $("#tiscreen").children(":gt(1)").remove();
+    if ($tiscreen.children().length > 0) {
+      $("#tiscreen").children(":gt(0)").remove();
       removeAll();
     }
     
@@ -204,7 +204,7 @@ $(function () {
             <button type="button" title="새로고침" class="reload" onClick=""><span class="icon"></span></button>
           </li>
           <li>
-            <button type="button" title="설정" class="setting" onClick=""><span class="icon"></span></button>
+            <button type="button" title="설정" class="dashboard_setting" onClick=""><span class="icon"></span></button>
           </li>
           <li>
             <button type="button" title="닫기" class="close" onClick=""><span class="icon"></span></button>
@@ -214,16 +214,79 @@ $(function () {
     </div>
   </div>
   <!-- header | end -->
+    <!-- dashboard_control -->
+  <div class="dashboard_control">
+    <div class="inner">
+      <dl>
+        <dt>대시보드 설정</dt>
+        <!-- 대시보드 선택 -->
+        <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">네트워크 모니터링<span class="caret"></span></button>
+          <div class="dropdown_layer">
+            <ul>
+              <li><a href="#">통합 대시보드</a></li>
+              <li><a class="label">기본 대시보드</a>
+                <ul>
+                  <li><a href="#" class="selected">보안 모니터링</a></li>
+                  <li><a href="#">자산 모니터링</a></li>
+                  <li><a href="#">트래픽 모니터링</a></li>
+                  <li><a href="#">네트워크 모니터링</a></li>
+                </ul>
+              </li>
+              <li><a class="label">나의 대시보드</a>
+                <ul>
+                  <li><a href="#">보안 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a href="#">자산 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a href="#">트래픽 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a href="#">네트워크 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                </ul></li>
+            </ul>
+          </div>
+        </dd>
+        <!-- 대시보드 선택 -->
+        <dd><button type="button" title="저장" class="save_dashboard"><span class="icon"></span><span class="txt">저장</span></button></dd>
+        <dd><button type="button" title="추가" class="add_dashboard"><span class="icon"></span><span class="txt">추가</span></button></dd>
+        <dd><button type="button" title="복제" class="clone_dashboard"><span class="icon"></span><span class="txt">복제</span></button></dd>
+        <dd class="bar">|</dd>
+        <!-- 컴포넌트 추가 -->
+        <dd class="dropdown"><button type="button" title="컴포넌트 추가" class="dropdown_toggle add_component"><span class="icon"></span><span class="txt">컴포넌트 추가</span><span class="caret"></span></button>
+          <div class="dropdown_layer">
+            <ul>
+              <li><a class="label">예제</a>
+                <ul>
+                  <li><a href="#">No data</a></li>
+                </ul>
+              </li>
+              <li><a class="label">차트</a>
+                <ul>
+                  <li><a href="#">파이</a></li>
+                  <li><a href="#">라인</a></li>
+                  <li><a href="#">바</a></li>
+                  <li><a href="#">히트맵</a></li>
+                  <li><a href="#">레이더</a></li>
+                </ul>
+              </li>
+              <li><a class="label">그외</a>
+                <ul>
+                  <li><a href="#">테이블</a></li>
+                  <li><a href="#">트리</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </dd>
+        <!-- 컴포넌트 추가 | end -->
+        <dd><button type="button" id="add" class="clone_dashboard"><span class="icon"></span><span class="txt">추가</span></button></dd>
+        <dd><button type="button" id="addMany" class="clone_dashboard"><span class="icon"></span><span class="txt">추가(20)</span></button></dd>
+        <dd><button type="button" id="removeAll" class="clone_dashboard"><span class="icon"></span><span class="txt">삭제</span></button></dd>
+        <dd><button type="button" id="save" class="clone_dashboard"><span class="icon"></span><span class="txt">저장</span></button></dd>
+        <dd><button type="button" id="load" class="clone_dashboard"><span class="icon"></span><span class="txt">로드</span></button></dd>
+        <dd><button type="button" id="refresh" class="clone_dashboard"><span class="icon"></span><span class="txt">새로고침</span></button></dd>
+        <dd><button type="button" id="change" class="clone_dashboard"><span class="icon"></span><span class="txt">전환</span></button></dd>
+      </dl>
+    </div>
+  </div>  
+  <!-- dashboard_control | end -->
   <div id="tiscreen">
-    <div>
-      <input id="add" type="button" value="Add TiComponent" style="color: red; font-size: 20px;font-weight: bold;"/>
-      <input id="addMany" type="button" value="Add TiComponent Many" style="color: red; font-size: 20px;font-weight: bold;"/>
-      <input id="removeAll" type="button" value="Remove All" style="color: red; font-size: 20px;font-weight: bold;"/>
-      <input id="save" type="button" value="Save" style="color: red; font-size: 20px;font-weight: bold;"/>
-      <input id="load" type="button" value="Load" style="color: red; font-size: 20px;font-weight: bold;"/>
-      <input id="refresh" type="button" value="Auto Refresh (2000ms) : 고장" style="color: red; font-size: 20px;font-weight: bold;"/>
-      <input id="change" type="button" value="dashboard type change" style="color: red; font-size: 20px;font-weight: bold;"/>
-    </div><br/>
   </div>
 </div>
 </body>
