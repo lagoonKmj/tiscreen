@@ -30,8 +30,10 @@
 <script type="text/javascript">
 
 var tiComponentItems = new Object(); 
-var tiScreenType = 0; // 0 : gridstack dashboard, 1 : previous dashboard   
-var dashboardComponents;
+var tiScreenType = 0; // 0 : gridstack dashboard, 1 : previous dashboard
+var numTiComponent = 0;
+var dashboardComponents = ${dashboardComponents};
+var dashboardComponentItems = new Object();
 
 $(function () {
 
@@ -45,48 +47,32 @@ $(function () {
       animate : true
   };
   
-  var exNode = {
-      "x" : 0, 
-      "y" : 0, 
-      "width" : 4, 
-      "height" : 3, 
-      "auto_position" : true,
-      "min_width" : 3, 
-      "max_width" : 8, 
-      "min_height" : 2, 
-      "max_height" : 8
-  };
-  
-  var tiComp = [ "ti.bar", "ti.grid", "ti.hitmap", "ti.line", "ti.pie", "ti.tree", "ti.radar", "ti.nodata" ];
-  var numTiComponent = 0;
-  
   var initialize = function() {
-    dashboardComponents = ${dashboardComponents}; 
-    setDashboard();
-    setEventListener();
     setTiscreen();
+    setEventListener();
   };
-  
-  var setDashboard = function() {
-    $(dashboardComponents).each(function(idx, element) {
-      var $html = $("<li><a>" + element.name + "</a></li>").addClass("dashboardComponent").data("class-item", element);
-    	if (element.division == 1) {
-    	  ($("#compCommon").css("display") == "none") ? $("#compCommon").show() : "";
-    	  $("#compCommon ul").append($html);
-    	} else if (element.division == 2) {
-    	  ($("#compNetwork").css("display") == "none") ? $("#compNetwork").show() : "";
-    	  $("#compNetwork ul").append($html);
-    	} else if (element.division == 3) {
-    	  ($("#compTimatrix").css("display") == "none") ? $("#compTimatrix").show() : "";
-    	  $("#compTimatrix ul").append($html);
-    	} else if (element.division == 4) {
-    	  ($("#compNdm").css("display") == "none") ? $("#compNdm").show() : "";
-    	  $("#compNdm ul").append($html);
-    	}
-    });
-  }
   
   var setTiscreen = function() {
+    //
+    $(dashboardComponents).each(function(idx, element) {
+      var $html = $("<li><a>" + element.name + "</a></li>").addClass("dashboardComponent").data("class-item", element);
+      if (element.division == 1) {
+        ($("#compCommon").css("display") == "none") ? $("#compCommon").show() : "";
+        $("#compCommon ul").append($html);
+      } else if (element.division == 2) {
+        ($("#compNetwork").css("display") == "none") ? $("#compNetwork").show() : "";
+        $("#compNetwork ul").append($html);
+      } else if (element.division == 3) {
+        ($("#compTimatrix").css("display") == "none") ? $("#compTimatrix").show() : "";
+        $("#compTimatrix ul").append($html);
+      } else if (element.division == 4) {
+        ($("#compNdm").css("display") == "none") ? $("#compNdm").show() : "";
+        $("#compNdm ul").append($html);
+      }
+      //Map 저장
+      dashboardComponentItems[element.id] = element;
+    });
+    //
     var $tiscreen = $("#tiscreen");
     if ($tiscreen.children().length > 0) {
       $("#tiscreen").children(":gt(0)").remove();
@@ -97,7 +83,20 @@ $(function () {
       var $gridStatck = $("<div class='grid-stack'/>");
       $tiscreen.append($gridStatck);
       this.grid = $gridStatck.gridstack(options).data("gridstack");
-      $("#load").trigger("click");
+     
+      var jsonNodes = tiCommon.getLocalStorage("tiscreen_data");
+      if (tiCommon.convertToBoolean(jsonNodes)) {
+        grid.removeAll();
+        var nodes = JSON.parse(jsonNodes);
+        for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
+          var node = nodes[iCnt];
+          if (dashboardComponentItems.hasOwnProperty(node.id)) {
+            node.class_name = dashboardComponentItems[node.id].class_name; 
+            node.name = dashboardComponentItems[node.id].name; 
+            addTiComponent(node);
+          }
+        }
+      }
     } else {
       var $orgDashboard = $("<div class='ti-dashboard'><img src='../../resources/images/tiscreen/org_dashboard.png' /></div>");
       $tiscreen.append($orgDashboard);
@@ -110,21 +109,11 @@ $(function () {
   }
   
   var setEventListener = function() {
-    $("#add").on("click", function() {
-      if (tiScreenType == 1) return;
-      addTiComponent(exNode);
-    });
-    $("#addMany").on("click", function() {
-      if (tiScreenType == 1) return;
-      for (var iCnt = 0; iCnt < 20; iCnt++) {
-        addTiComponent(exNode);
-      }
-    });
     $("#removeAll").on("click", function() {
       if (tiScreenType == 1) return;
       removeAll();
     });
-    $("#save").on("click", function() {
+    $(".save_dashboard").on("click", function() {
       if (tiScreenType == 1) return;
       var nodes = grid.grid.nodes;
       var saveNodes = new Array();
@@ -133,21 +122,11 @@ $(function () {
         delete node["el"];
         delete node["_grid"];
         node["autoPosition"] = false;
+        node["class_name"] = node.id;
         saveNodes.push(node);
       }
       tiCommon.setLocalStorage("tiscreen_data", JSON.stringify(saveNodes));
       alert("저장완료~!");
-    });
-    $("#load").on("click", function() {
-      if (tiScreenType == 1) return;
-      var jsonNodes = tiCommon.getLocalStorage("tiscreen_data");
-      if (tiCommon.convertToBoolean(jsonNodes)) {
-        grid.removeAll();
-        var nodes = JSON.parse(jsonNodes);
-        for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
-          addTiComponent(nodes[iCnt]);
-        }
-      }
     });
     $("#refresh").on("click", function() {
       if (tiScreenType == 1) return;
@@ -161,12 +140,16 @@ $(function () {
     });
     $(".dashboardComponent").on("click", function() {
       var node = $(this).data("class-item");
-      node.x = 0, 
-      node.y = 0, 
-      node.width = 4, 
-      node.height = 3, 
-      node.auto_position = true
-      addTiComponent(node);
+      node.x = 0; 
+      node.y = 0;
+      node.width = 4;
+      node.height = 3;
+      node.auto_position = true;
+      if (tiCommon.convertToBoolean(node.class_name)) {
+        addTiComponent(node);
+      } else {
+        console.warn("[ERROR] conf_dashboard_component 테이블에 class_name을 정의 하십시요.");
+      }
     });
   }
   
@@ -179,6 +162,7 @@ $(function () {
     tiComponent += "  </div>";
     tiComponent += "</div>";
     
+    var className = node.class_name;
     grid.addWidget(
         $.parseHTML(tiComponent), 
         node.x, 
@@ -190,19 +174,11 @@ $(function () {
         node.max_width,
         node.min_height,
         node.max_height,
-        nodeId
+        node.id
         );
-    var name = "";
-    console.log(node);
-    if (node.hasOwnProperty("class_name")) {
-      name = node.class_name; 
-    } else {
-      name = tiComp[tiCommon.randomRange(0, 7)];;
-    }
+    
     $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, 
-      "numTiComponent" : numTiComponent, "name": name, 
-      "title" : "ID : " + tiComponentId + ", Class : " + name});
-
+      "numTiComponent" : numTiComponent, "className": className, "title" : node.name});
     numTiComponent++;
   };
   
@@ -304,11 +280,7 @@ $(function () {
           </div>
         </dd>
         <!-- 컴포넌트 추가 | end -->
-        <dd><button type="button" id="add" class="clone_dashboard"><span class="icon"></span><span class="txt">추가</span></button></dd>
-        <dd><button type="button" id="addMany" class="clone_dashboard"><span class="icon"></span><span class="txt">추가(20)</span></button></dd>
         <dd><button type="button" id="removeAll" class="clone_dashboard"><span class="icon"></span><span class="txt">삭제</span></button></dd>
-        <dd><button type="button" id="save" class="clone_dashboard"><span class="icon"></span><span class="txt">저장</span></button></dd>
-        <dd><button type="button" id="load" class="clone_dashboard"><span class="icon"></span><span class="txt">로드</span></button></dd>
         <dd><button type="button" id="refresh" class="clone_dashboard"><span class="icon"></span><span class="txt">새로고침</span></button></dd>
         <dd><button type="button" id="change" class="clone_dashboard"><span class="icon"></span><span class="txt">전환</span></button></dd>
       </dl>

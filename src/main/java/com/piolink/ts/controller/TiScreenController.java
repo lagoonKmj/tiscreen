@@ -36,7 +36,7 @@ public class TiScreenController {
 
     @RequestMapping(value = "/load.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView load(@RequestParam Map<String, Object> map) {
-        ModelAndView mv = new ModelAndView("/components/" + map.get("name"));
+        ModelAndView mv = new ModelAndView("/components/" + map.get("className"));
         map.put("tiContainerId", "container_" + map.get("numTiComponent"));
         mv.addAllObjects(map);
         return mv;
