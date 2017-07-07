@@ -14,6 +14,15 @@
      */
     var _component = function() {
       //Checked Required
+      if (!tiCommon.convertToBoolean($opts.tiComponentId)) {
+        console.warn("[ERROR] tiComponentId 필수 옵션!!!");
+      }
+      if (!tiCommon.convertToBoolean($opts.tiContainerId)) {
+        console.warn("[ERROR] tiContainerId 필수 옵션!!!");
+      }
+      if (!tiCommon.convertToBoolean($opts.key)) {
+        console.warn("[ERROR] key 필수 옵션!!!");
+      }
       if (!tiCommon.convertToBoolean($opts.url)) {
         console.warn("[ERROR] url 필수 옵션!!!");
       }
@@ -46,7 +55,7 @@
     _component.prototype = {
         //Initialize
         initialize : function() {
-          ($opts.isLog) ? console.log("%cSTART{", "font:1em Arial;color:#EC6521;font-weight:bold") : "";
+          ($opts.isLog) ? console.log("%cSTART{", "font:1em Arial;color:#CB6CFF;font-weight:bold") : "";
           ($opts.isLog) ? console.log("1. 티컴포넌트 생성  ID: " + $opts.tiComponentId) : "";
           ($opts.isLog) ? console.log("2. 최대넓이 : " + $opts.maxWidth + ", 최대높이 : " + $opts.maxHeight + 
               ", \n   최소넓이 : " + $opts.minWidth + ", 최소높이 : " + $opts.minHeight +
@@ -216,7 +225,7 @@
             console.warn("[ERROR] ready() 함수를 정의 및 구현 하십시요.");
           }
             
-          ($opts.isLog) ? console.log("%c} END", "font:1em Arial;color:#EC6521;font-weight:bold") : "";
+          ($opts.isLog) ? console.log("%c} END", "font:1em Arial;color:#CB6CFF;font-weight:bold") : "";
         },
         //TiComponent Item
         getTiComponentItem : function() {$opts.url
