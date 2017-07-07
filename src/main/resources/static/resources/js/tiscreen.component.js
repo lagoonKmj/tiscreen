@@ -8,16 +8,36 @@
     var $tiComponent = $($opts.tiComponentId), $currentTarget = $tiComponent.parent();
     var $tiContainer = $($opts.tiContainerId);
     var isNodata = false, headerAreaHeight = 35;
+    var objItem = dashboardComponentItems[$opts.key];
     /**
      * new _component
      */
     var _component = function() {
       //Checked Required
-      if (!tiCommon.convertToBoolean($opts.title)) {
-        console.warn("[ERROR] title 필수 옵션!!!");
-      }
       if (!tiCommon.convertToBoolean($opts.url)) {
         console.warn("[ERROR] url 필수 옵션!!!");
+      }
+      //Set Options(값이 존재 안할시 DB에 있는 데이터로 처리)
+      if (!tiCommon.convertToBoolean($opts.title)) {
+        $opts.title = objItem.name;
+      }
+      if (!tiCommon.convertToBoolean($opts.isConfig)) {
+        $opts.isConfig = tiCommon.convertToBoolean(objItem.is_config);
+      }
+      if (!tiCommon.convertToBoolean($opts.isInformation)) {
+        $opts.isInformation = tiCommon.convertToBoolean(objItem.is_information);
+      }
+      if (isNaN($opts.minHeight)) {
+        $opts.minHeight = objItem.min_height;
+      }
+      if (isNaN($opts.minWidth)) {
+        $opts.minWidth = objItem.min_width;
+      }
+      if (isNaN($opts.maxHeight)) {
+        $opts.maxHeight = objItem.max_height;
+      }
+      if (isNaN($opts.maxWidth)) {
+        $opts.maxWidth = objItem.max_width;
       }
     };
     /**
@@ -28,8 +48,15 @@
         initialize : function() {
           ($opts.isLog) ? console.log("%cSTART{", "font:1em Arial;color:#EC6521;font-weight:bold") : "";
           ($opts.isLog) ? console.log("1. 티컴포넌트 생성  ID: " + $opts.tiComponentId) : "";
+          ($opts.isLog) ? console.log("2. 최대넓이 : " + $opts.maxWidth + ", 최대높이 : " + $opts.maxHeight + 
+              ", \n   최소넓이 : " + $opts.minWidth + ", 최소높이 : " + $opts.minHeight +
+              ", \n   타이틀 : " + $opts.title +
+              ", \n   설정버튼 : " + $opts.isConfig +
+              ", \n   정보영역 : " + $opts.isInformation +
+              ", \n   차트유무 : " + $opts.isHighCharts +
+              ", \n   노데이터메세지 : " + $opts.nodataMessage +
+              ", \n   URL : " + $opts.url) : "";
           //gird 옵션 재정의
-          ($opts.isLog) ? console.log("2. 최대넓이 : " + $opts.maxWidth + ", 최대높이 : " + $opts.maxHeight + ", 최소넓이 : " + $opts.minWidth + ", 최소높이 : " + $opts.minHeight) : "";
           {
             grid.maxWidth($currentTarget, $opts.maxWidth);
             grid.maxHeight($currentTarget, $opts.maxHeight);
@@ -204,15 +231,16 @@
       tiComponentId : null, // 컴퍼넌트 ID 정의 (e.g : component_1)
       tiContainerId : null, // 컨테이너 ID 정의 (e.g : container_1)
       title : null, // 컴퍼넌트 타이틀 정의
-      minHeight : 2, // 컴퍼넌트 최소 높이 정의
-      minWidth : 2, // 컴퍼넌트 최소 넓이 정의
-      maxHeight : 8, // 컴퍼넌트 최대 높이 정의
-      maxWidth : 8, // 컴퍼넌트 최대 넓이 정의
-      isLog : false, // 콘솔로그 유무
-      isHighCharts : false, // 하이차트 유무
+      minHeight : NaN, // 컴퍼넌트 최소 높이 정의
+      minWidth : NaN, // 컴퍼넌트 최소 넓이 정의
+      maxHeight : NaN, // 컴퍼넌트 최대 높이 정의
+      maxWidth : NaN, // 컴퍼넌트 최대 넓이 정의
+      isLog : null, // 콘솔로그 유무
+      isHighCharts : null, // 하이차트 유무
       nodataMessage : "No data", // 데이터없을시 출력될 메세지
       url : null, // Ajax 호출 URL
-      isConfig : false, // 설정기능 유무
-      isInformation : false // (타이틀영역 옆) 정보창 유무
+      isConfig : null, // 설정기능 유무
+      isInformation : null, // (타이틀영역 옆) 정보창 유무
+      key : NaN
   };
 })(jQuery);

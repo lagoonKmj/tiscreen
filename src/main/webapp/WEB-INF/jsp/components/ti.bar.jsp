@@ -7,12 +7,16 @@
   var initialize = function() {
     var tiComponentId = "#" + "${tiComponentId}";
     var tiContainerId = "#" + "${tiContainerId}";
+    var item = dashboardComponentItems["${id}"];
+    
+    
     tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
       tiComponentId : tiComponentId,
       tiContainerId : tiContainerId,
-      title : "${title}",
       isHighCharts : true,
-      url : "/getData.json"
+      url : "/getData.json",
+      key : "${id}",
+      isLog : true
     });
     tiComponentItems[tiComponentId].initialize();
   };

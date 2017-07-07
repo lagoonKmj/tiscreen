@@ -10,7 +10,7 @@
     tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
       tiComponentId : tiComponentId,
       tiContainerId : tiContainerId,
-      title : "${title}",
+      key : "${id}",
       url : "/getData.json"
     });
     tiComponentItems[tiComponentId].initialize();

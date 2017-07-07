@@ -27,6 +27,7 @@ public class DashboardComponent extends AbstractEntity  {
     private String isUse;
     private String className;
     private String division;
+    private String isInformation;
 
     public DashboardComponent() {
         super();
@@ -130,5 +131,13 @@ public class DashboardComponent extends AbstractEntity  {
 
     public void setDivision(String division) {
         this.division = division;
+    }
+
+    public String getIsInformation() {
+        return isInformation;
+    }
+
+    public void setIsInformation(String isInformation) {
+        this.isInformation = isInformation;
     }
 }

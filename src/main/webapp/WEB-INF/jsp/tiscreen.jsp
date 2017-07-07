@@ -142,8 +142,8 @@ $(function () {
       var node = $(this).data("class-item");
       node.x = 0; 
       node.y = 0;
-      node.width = 4;
-      node.height = 3;
+      node.width = node.def_width;
+      node.height = node.def_height;
       node.auto_position = true;
       if (tiCommon.convertToBoolean(node.class_name)) {
         addTiComponent(node);
@@ -177,8 +177,12 @@ $(function () {
         node.id
         );
     
-    $("#" + tiComponentId).load("/load.do", {"tiComponentId" : tiComponentId, 
-      "numTiComponent" : numTiComponent, "className": className, "title" : node.name});
+    $("#" + tiComponentId).load("/load.do", {
+      "tiComponentId" : tiComponentId, 
+      "numTiComponent" : numTiComponent, 
+      "className": className, 
+      "id" : node.id
+    });
     numTiComponent++;
   };
   
