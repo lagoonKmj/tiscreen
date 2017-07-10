@@ -130,7 +130,7 @@ $(function () {
         alert("저장완료~!");
       });
     });
-    $("#refresh").on("click", function() {
+    $(".reload").on("click", function() {
       if (tiScreenType == 1) return;
       for (var key in tiComponentItems) {
         tiComponentItems[key].refresh();
@@ -264,7 +264,7 @@ $(function () {
         <!-- 대시보드 선택 -->
         <dd><button type="button" title="저장" class="save_dashboard"><span class="icon"></span><span class="txt">저장</span></button></dd>
         <dd><button type="button" title="추가" class="add_dashboard"><span class="icon"></span><span class="txt">추가</span></button></dd>
-        <dd><button type="button" title="복제" class="clone_dashboard"><span class="icon"></span><span class="txt">복제</span></button></dd>
+<!--         <dd><button type="button" title="복제" class="clone_dashboard"><span class="icon"></span><span class="txt">복제</span></button></dd> -->
         <dd class="bar">|</dd>
         <!-- 컴포넌트 추가 -->
         <dd class="dropdown"><button type="button" title="컴포넌트 추가" class="dropdown_toggle add_component"><span class="icon"></span><span class="txt">컴포넌트 추가</span><span class="caret"></span></button>
@@ -287,8 +287,7 @@ $(function () {
         </dd>
         <!-- 컴포넌트 추가 | end -->
         <dd><button type="button" id="removeAll" class="clone_dashboard"><span class="icon"></span><span class="txt">삭제</span></button></dd>
-        <dd><button type="button" id="refresh" class="clone_dashboard"><span class="icon"></span><span class="txt">새로고침</span></button></dd>
-        <dd><button type="button" id="change" class="clone_dashboard"><span class="icon"></span><span class="txt">전환</span></button></dd>
+<!--         <dd><button type="button" id="change" class="clone_dashboard"><span class="icon"></span><span class="txt">전환</span></button></dd> -->
       </dl>
     </div>
   </div>  
