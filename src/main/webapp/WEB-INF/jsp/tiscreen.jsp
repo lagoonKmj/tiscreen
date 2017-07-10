@@ -48,12 +48,12 @@ $(function () {
   };
   
   var initialize = function() {
+    setComponentData();
     setTiscreen();
     setEventListener();
   };
   
-  var setTiscreen = function() {
-    //
+  var setComponentData = function() {
     $(dashboardComponents).each(function(idx, element) {
       var $html = $("<li><a>" + element.name + "</a></li>").addClass("dashboardComponent").data("class-item", element);
       if (element.division == 1) {
@@ -71,8 +71,10 @@ $(function () {
       }
       //Map 저장
       dashboardComponentItems[element.id] = element;
-    });
-    //
+    });    
+  }
+  
+  var setTiscreen = function() {
     var $tiscreen = $("#tiscreen");
     if ($tiscreen.children().length > 0) {
       $("#tiscreen").children(":gt(0)").remove();
@@ -83,20 +85,19 @@ $(function () {
       var $gridStatck = $("<div class='grid-stack'/>");
       $tiscreen.append($gridStatck);
       this.grid = $gridStatck.gridstack(options).data("gridstack");
-     
-      var jsonNodes = tiCommon.getLocalStorage("tiscreen_data");
-      if (tiCommon.convertToBoolean(jsonNodes)) {
-        grid.removeAll();
-        var nodes = JSON.parse(jsonNodes);
-        for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
-          var node = nodes[iCnt];
-          if (dashboardComponentItems.hasOwnProperty(node.id)) {
-            node.class_name = dashboardComponentItems[node.id].class_name; 
-            node.name = dashboardComponentItems[node.id].name; 
+      grid.removeAll();
+      $.get("getUserDashboardComponent.json", { "dashboard_id" : 1 }, function(data) {
+        console.log(data);
+        for (var iCnt = 0; iCnt < data.length; iCnt++) {
+          var node = data[iCnt];
+          if (dashboardComponentItems.hasOwnProperty(node.component_id)) {
+            node.class_name = dashboardComponentItems[node.component_id].class_name; 
+            node.name = dashboardComponentItems[node.component_id].name; 
+            node.id = node.component_id; 
             addTiComponent(node);
-          }
         }
-      }
+     }
+      });
     } else {
       var $orgDashboard = $("<div class='ti-dashboard'><img src='../../resources/images/tiscreen/org_dashboard.png' /></div>");
       $tiscreen.append($orgDashboard);
@@ -122,7 +123,6 @@ $(function () {
         delete node["el"];
         delete node["_grid"];
         saveNodes.push(node);
-        console.log(node);
       }
       var param = "dashboard_id=1";
       param += "&components=" + JSON.stringify(saveNodes);
@@ -142,8 +142,8 @@ $(function () {
     });
     $(".dashboardComponent").on("click", function() {
       var node = $(this).data("class-item");
-      node.x = 0; 
-      node.y = 0;
+      node.pos_x = 0; 
+      node.pos_y = 0;
       node.width = node.def_width;
       node.height = node.def_height;
       node.auto_position = true;
@@ -167,8 +167,8 @@ $(function () {
     var className = node.class_name;
     grid.addWidget(
         $.parseHTML(tiComponent), 
-        node.x, 
-        node.y, 
+        node.pos_x, 
+        node.pos_y, 
         node.width, 
         node.height,
         node.auto_position,

@@ -80,9 +80,9 @@ public class TiScreenController {
         Long dashboardId = StringUtils.getLong(map.get("dashboard_id"));
         String jsonComponents = StringUtils.get(map.get("components"));
         List<Map<String, Object>> componentsList = JsonUtils.fromJson(jsonComponents, List.class);
+        userDashboardComponentService.deleteByDashboardId(dashboardId);
         for (Map<String, Object> component : componentsList) {
             UserDashboardComponent userDashboardComponent = new UserDashboardComponent();
-            DashboardComponent dashboardComponent = dashboardComponentService.findOne(StringUtils.getLong(component.get("id")));
             userDashboardComponent.setDashboardId(dashboardId);
             userDashboardComponent.setComponentId(StringUtils.getLong(component.get("id")));
             userDashboardComponent.setHeight(StringUtils.getInteger(component.get("height")));
@@ -92,9 +92,17 @@ public class TiScreenController {
             userDashboardComponent.setIsUse("Y");
             userDashboardComponent.setOrderby(1);
             userDashboardComponentService.save(userDashboardComponent);
-            System.out.println("9");
         }
-        return "OK";
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+        return JsonUtils.toJson(resultMap);
     }
     
+    @RequestMapping(value = "/getUserDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String getUserDashboardComponent(@RequestParam Map<String, Object> map) {
+        
+        Long dashboardId = StringUtils.getLong(map.get("dashboard_id"));
+        List<UserDashboardComponent> userDashboardComponents = userDashboardComponentService.findByDashboardId(dashboardId);
+        return JsonUtils.toJson(userDashboardComponents);
+    }
 }
