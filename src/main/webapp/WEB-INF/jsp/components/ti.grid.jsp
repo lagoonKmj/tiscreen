@@ -21,12 +21,20 @@
     $tiComponent.setNodata();
   };
   
-  var onResizestop = function($tiComponent) {
-    //TODO
+  var setComponentPara = function() {
+    //TODO 컴퍼넌트에 추가적인 파라미터 필요할때 구현
   };
-  
+
+  var setPageEventListener = function() {
+    //TODO 컴퍼넌트에 추가적인 이벤트 필요할때 구현
+  };
+
+  var onResizestop = function($tiComponent) {
+    //TODO 리사이즈가 종료되면 실행
+  };
+
   var refresh = function($tiComponent) {
-    //TODO
+    //TODO 새로고침 이벤트가 발생되면 실행
   };
   
   initialize();
