@@ -30,10 +30,10 @@
       if (!tiCommon.convertToBoolean($opts.title)) {
         $opts.title = componentItem.name;
       }
-      if (!tiCommon.convertToBoolean($opts.isConfig)) {
+      if ($opts.isConfig == null) {
         $opts.isConfig = tiCommon.convertToBoolean(componentItem.is_config);
       }
-      if (!tiCommon.convertToBoolean($opts.isInformation)) {
+      if ($opts.isInformation == null) {
         $opts.isInformation = tiCommon.convertToBoolean(componentItem.is_information);
       }
       if (isNaN($opts.minHeight)) {
@@ -244,7 +244,7 @@
       minWidth : NaN, // 컴퍼넌트 최소 넓이 정의
       maxHeight : NaN, // 컴퍼넌트 최대 높이 정의
       maxWidth : NaN, // 컴퍼넌트 최대 넓이 정의
-      isLog : null, // 콘솔로그 유무
+      isLog : false, // 콘솔로그 유무
       isHighCharts : null, // 하이차트 유무
       nodataMessage : "No data", // 데이터없을시 출력될 메세지
       url : null, // Ajax 호출 URL
