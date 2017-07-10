@@ -216,7 +216,7 @@
             console.warn("[INFO] refresh() 함수를 정의 및 구현 하십시요.");
           }
         },
-        //데이터 가져오기
+        //준비완료
         getData : function() {
           if (typeof ready === "function") {
             ($opts.isLog) ? console.log("7. 티컴포넌트 설정 완료.") : "";
