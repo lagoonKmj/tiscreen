@@ -8,7 +8,7 @@
     var $tiComponent = $($opts.tiComponentId), $currentTarget = $tiComponent.parent();
     var $tiContainer = $($opts.tiContainerId);
     var isNodata = false, headerAreaHeight = 35;
-    var objItem = dashboardComponentItems[$opts.key];
+    var componentItem = dashboardComponentItems[$opts.componentId];
     /**
      * new _component
      */
@@ -20,33 +20,33 @@
       if (!tiCommon.convertToBoolean($opts.tiContainerId)) {
         console.warn("[ERROR] tiContainerId 필수 옵션!!!");
       }
-      if (!tiCommon.convertToBoolean($opts.key)) {
-        console.warn("[ERROR] key 필수 옵션!!!");
+      if (!tiCommon.convertToBoolean($opts.componentId)) {
+        console.warn("[ERROR] componentId 필수 옵션!!!");
       }
       if (!tiCommon.convertToBoolean($opts.url)) {
         console.warn("[ERROR] url 필수 옵션!!!");
       }
       //Set Options(값이 존재 안할시 DB에 있는 데이터로 처리)
       if (!tiCommon.convertToBoolean($opts.title)) {
-        $opts.title = objItem.name;
+        $opts.title = componentItem.name;
       }
       if (!tiCommon.convertToBoolean($opts.isConfig)) {
-        $opts.isConfig = tiCommon.convertToBoolean(objItem.is_config);
+        $opts.isConfig = tiCommon.convertToBoolean(componentItem.is_config);
       }
       if (!tiCommon.convertToBoolean($opts.isInformation)) {
-        $opts.isInformation = tiCommon.convertToBoolean(objItem.is_information);
+        $opts.isInformation = tiCommon.convertToBoolean(componentItem.is_information);
       }
       if (isNaN($opts.minHeight)) {
-        $opts.minHeight = objItem.min_height;
+        $opts.minHeight = componentItem.min_height;
       }
       if (isNaN($opts.minWidth)) {
-        $opts.minWidth = objItem.min_width;
+        $opts.minWidth = componentItem.min_width;
       }
       if (isNaN($opts.maxHeight)) {
-        $opts.maxHeight = objItem.max_height;
+        $opts.maxHeight = componentItem.max_height;
       }
       if (isNaN($opts.maxWidth)) {
-        $opts.maxWidth = objItem.max_width;
+        $opts.maxWidth = componentItem.max_width;
       }
     };
     /**
@@ -250,6 +250,6 @@
       url : null, // Ajax 호출 URL
       isConfig : null, // 설정기능 유무
       isInformation : null, // (타이틀영역 옆) 정보창 유무
-      key : NaN
+      componentId : NaN
   };
 })(jQuery);

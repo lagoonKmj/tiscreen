@@ -7,10 +7,11 @@
   var initialize = function() {
     var tiComponentId = "#" + "${tiComponentId}";
     var tiContainerId = "#" + "${tiContainerId}";
+    var componentId = "${id}";
     tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
       tiComponentId : tiComponentId,
       tiContainerId : tiContainerId,
-      key : "${id}",
+      componentId : componentId,
       url : "/getData.json"
     });
     tiComponentItems[tiComponentId].initialize();
