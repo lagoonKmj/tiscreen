@@ -1,20 +1,12 @@
 package com.piolink.ts.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 
 @Entity(name = "conf_dashboard_component")
 public class DashboardComponent extends AbstractEntity  {
     
-    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "id", referencedColumnName = "component_id")
-    private DashboardComponentPara dashboardComponentPara;
-
     private String name;
     private String description;
     private Integer minWidth;
@@ -111,10 +103,6 @@ public class DashboardComponent extends AbstractEntity  {
 
     public void setIsUse(String isUse) {
         this.isUse = isUse;
-    }
-
-    public DashboardComponentPara getDashboardComponentPara() {
-        return dashboardComponentPara;
     }
 
     public String getClassName() {

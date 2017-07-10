@@ -1,5 +1,7 @@
 package com.piolink.ts.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +32,13 @@ public class UserDashboardComponentService {
     
     public void delete(Long id) {
         repository.delete(id);
+    }
+    
+    public List<UserDashboardComponent> findByDashboardId(Long dashboardId) {
+        return repository.findByDashboardId(dashboardId);
+    }
+    
+    public void deleteByDashboardId(Long dashboardId){
+        this.repository.deleteByDashboardId(dashboardId);
     }
 }

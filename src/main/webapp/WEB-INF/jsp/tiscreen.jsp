@@ -121,12 +121,14 @@ $(function () {
         var node = tiCommon.deepCopy(nodes[iCnt]);
         delete node["el"];
         delete node["_grid"];
-        node["autoPosition"] = false;
-        node["class_name"] = node.id;
         saveNodes.push(node);
+        console.log(node);
       }
-      tiCommon.setLocalStorage("tiscreen_data", JSON.stringify(saveNodes));
-      alert("저장완료~!");
+      var param = "dashboard_id=1";
+      param += "&components=" + JSON.stringify(saveNodes);
+      $.get("/addUserDashboard.json", param, function(data) {
+        alert("저장완료~!");
+      });
     });
     $("#refresh").on("click", function() {
       if (tiScreenType == 1) return;

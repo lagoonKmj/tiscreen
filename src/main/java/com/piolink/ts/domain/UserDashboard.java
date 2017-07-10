@@ -1,16 +1,11 @@
 package com.piolink.ts.domain;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.piolink.ts.dbproxy.AbstractEntity;
 
 
@@ -21,10 +16,6 @@ public class UserDashboard extends AbstractEntity  {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userDashboard", cascade=CascadeType.PERSIST)
-    @JsonManagedReference
-    public List<UserDashboardComponent> userDashboardComponentList;
-
     private Integer index;
     private String name;
     private String isShare;
@@ -96,4 +87,5 @@ public class UserDashboard extends AbstractEntity  {
     public void setIsUse(String isUse) {
         this.isUse = isUse;
     }
+
 }

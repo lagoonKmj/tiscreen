@@ -56,7 +56,7 @@
         //Initialize
         initialize : function() {
           ($opts.isLog) ? console.log("%cSTART{", "font:1em Arial;color:#CB6CFF;font-weight:bold") : "";
-          ($opts.isLog) ? console.log("1. 티컴포넌트 생성  ID: " + $opts.tiComponentId) : "";
+          ($opts.isLog) ? console.log("1. 티컴포넌트 생성 ID: " + $opts.tiComponentId) : "";
           ($opts.isLog) ? console.log("2. 최대넓이 : " + $opts.maxWidth + ", 최대높이 : " + $opts.maxHeight + 
               ", \n   최소넓이 : " + $opts.minWidth + ", 최소높이 : " + $opts.minHeight +
               ", \n   타이틀 : " + $opts.title +

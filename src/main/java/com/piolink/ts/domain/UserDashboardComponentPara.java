@@ -7,6 +7,7 @@ import com.piolink.ts.dbproxy.AbstractEntity;
 @Entity(name = "conf_user_dashboard_component_para")
 public class UserDashboardComponentPara extends AbstractEntity  {
 
+    private Long component_id;
     private String paraValue1;
     private String paraValue2;
     private String paraValue3;
@@ -64,5 +65,13 @@ public class UserDashboardComponentPara extends AbstractEntity  {
 
     public void setParaValue6(String paraValue6) {
         this.paraValue6 = paraValue6;
+    }
+
+    public Long getComponent_id() {
+        return component_id;
+    }
+
+    public void setComponent_id(Long component_id) {
+        this.component_id = component_id;
     }
 }

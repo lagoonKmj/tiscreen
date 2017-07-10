@@ -1,31 +1,16 @@
 package com.piolink.ts.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 
 @Entity(name = "conf_user_dashboard_component")
 public class UserDashboardComponent extends AbstractEntity  {
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "dashboard_id", referencedColumnName = "id")
-    public UserDashboard userDashboard;
-    
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "component_id", referencedColumnName = "id")
-    private DashboardComponent dashboardComponent;
-    
-    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "id", referencedColumnName = "component_id")
-    private UserDashboardComponentPara userDashboardComponentPara;
-
-    private Integer posX;
-    private Integer posY;
+    private Long dashboardId;
+    private Long componentId;
+    private Integer pos_x;
+    private Integer pos_y;
     private Integer width;
     private Integer height;
     private Integer orderby;
@@ -36,19 +21,19 @@ public class UserDashboardComponent extends AbstractEntity  {
     }
 
     public Integer getPosX() {
-        return posX;
+        return pos_x;
     }
 
     public void setPosX(Integer posX) {
-        this.posX = posX;
+        this.pos_x = posX;
     }
 
     public Integer getPosY() {
-        return posY;
+        return pos_y;
     }
 
     public void setPosY(Integer posY) {
-        this.posY = posY;
+        this.pos_y = posY;
     }
 
     public Integer getWidth() {
@@ -83,11 +68,20 @@ public class UserDashboardComponent extends AbstractEntity  {
         this.isUse = isUse;
     }
 
-    public DashboardComponent getDashboardComponent() {
-        return dashboardComponent;
+    public Long getDashboardId() {
+        return dashboardId;
     }
 
-    public UserDashboardComponentPara getUserDashboardComponentPara() {
-        return userDashboardComponentPara;
+    public void setDashboardId(Long dashboardId) {
+        this.dashboardId = dashboardId;
     }
+
+    public Long getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(Long componentId) {
+        this.componentId = componentId;
+    }
+
 }

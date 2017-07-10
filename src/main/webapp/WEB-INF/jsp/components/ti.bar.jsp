@@ -7,9 +7,6 @@
   var initialize = function() {
     var tiComponentId = "#" + "${tiComponentId}";
     var tiContainerId = "#" + "${tiContainerId}";
-    var item = dashboardComponentItems["${id}"];
-    
-    
     tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
       tiComponentId : tiComponentId,
       tiContainerId : tiContainerId,
