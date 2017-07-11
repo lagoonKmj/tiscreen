@@ -4,28 +4,33 @@
 <div class="grid-stack-item-content-container" id="${tiContainerId}"></div>
 
 <script type="text/javascript">
+
+$(function () {
+ 
   var initialize = function() {
     var tiComponentId = "#" + "${tiComponentId}";
     var tiContainerId = "#" + "${tiContainerId}";
     var componentId = "${id}";
-    tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
-      tiComponentId : tiComponentId,
-      tiContainerId : tiContainerId,
-      componentId : componentId,
-      isHighCharts : true,
-      url : "/getData.json"
-    });
+    var options = {
+        tiComponentId : tiComponentId,
+        tiContainerId : tiContainerId,
+        componentId : componentId,
+        isHighCharts : true,
+        url : "/getData.json"
+    };
+    var functions = {
+        afterContentInit : function($tiComponent) {
+          drawChart($tiComponent);
+        }
+    };
+    tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent(options, functions);
     tiComponentItems[tiComponentId].initialize();
   };
   
-  var ready = function() {
-    drawChart();
-  };
   
-  var drawChart = function() {
-    var $tiComponent = tiComponentItems["#" + "${tiComponentId}"];
+  var drawChart = function($tiComponent) {
     var rect = $tiComponent.getRectangle();
-    Highcharts.chart("${tiContainerId}", {
+    Highcharts.chart($tiComponent.getTiContainerIdRemoveSharp(), {
         chart: {
             type: 'pie',
             width: rect.width,
@@ -66,23 +71,26 @@
     });    
   };
   
-  var refresh = function($tiComponent) {
-    var chart = $($tiComponent.getTiContainerId()).highcharts();
-    var newData = [
-        { name: 'IE', y: tiCommon.randomRange(1, 100) },
-        { name: 'Chrome', y: tiCommon.randomRange(1, 100), sliced: true, selected: true },
-        { name: 'Firefox', y: tiCommon.randomRange(1, 100) },
-        { name: 'Safari', y: tiCommon.randomRange(1, 100) }, 
-        { name: 'Opera', y: tiCommon.randomRange(1, 100) }
-    ];
-    chart.series[0].setData(newData);
-    chart.redraw();
+//   var refresh = function($tiComponent) {
+//     var chart = $($tiComponent.getTiContainerId()).highcharts();
+//     var newData = [
+//         { name: 'IE', y: tiCommon.randomRange(1, 100) },
+//         { name: 'Chrome', y: tiCommon.randomRange(1, 100), sliced: true, selected: true },
+//         { name: 'Firefox', y: tiCommon.randomRange(1, 100) },
+//         { name: 'Safari', y: tiCommon.randomRange(1, 100) }, 
+//         { name: 'Opera', y: tiCommon.randomRange(1, 100) }
+//     ];
+//     chart.series[0].setData(newData);
+//     chart.redraw();
     
-    //
-    setTimeout(function() {
-      $tiComponent.refresh();
-    }, 2000);
-  };
+//     //
+//     setTimeout(function() {
+//       $tiComponent.refresh();
+//     }, 2000);
+//   };
   
   initialize();
+  
+});
+
 </script>

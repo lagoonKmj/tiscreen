@@ -1,14 +1,19 @@
 "use strict";
 (function($) {
-  $.fn.tiComponent = function(options) {
+  $.fn.tiComponent = function(options, functions) {
     /**
      * Variable
      */
     var $opts = $.extend({}, $.fn.tiComponent.defaults, options);
-    var $tiComponent = $($opts.tiComponentId), $currentTarget = $tiComponent.parent();
+    var $tiComponent = $($opts.tiComponentId);
+    var $currentTarget = $tiComponent.parent();
     var $tiContainer = $($opts.tiContainerId);
-    var isNodata = false, headerAreaHeight = 35;
+    var isNodata = false;
+    var headerAreaHeight = 35;
     var componentItem = dashboardComponentItems[$opts.componentId];
+    var tiFunctions = functions;
+    var totalElements = NaN;
+    var content = null;
     /**
      * new _component
      */
@@ -80,12 +85,18 @@
           _innerMethod.setEventListener();
           //데이터 겟
           _innerMethod.getData();
+          
+          ($opts.isLog) ? console.log("%c} END", "font:1em Arial;color:#CB6CFF;font-weight:bold") : "";
+          
         },
         getTiComponentId : function() {
           return $opts.tiComponentId;
         },
         getTiContainerId : function() {
           return $opts.tiContainerId;
+        },
+        getTiContainerIdRemoveSharp : function() {
+          return ($opts.tiContainerId).substring(1);
         },
         getRectangle : function() {
           return {
@@ -98,24 +109,14 @@
         refresh : function() {
           _innerMethod.refresh();
         }, 
-        setNodata : function() {
-          if (isNodata) {
-            var $taget = $(".no_data_content");
-            if ($taget.length > 0) {
-              $taget.remove();
-            }
-          } else {
-            var strHtml = "<div class='no_data_content'>";
-            strHtml += "     <span class='icon'></span>";
-            strHtml += "     <span class='text'>" + $opts.nodataMessage + "</span>";
-            strHtml += "   </div>";
-            $tiContainer.addClass("no_data").append(strHtml);
-          }
-          isNodata = !isNodata;  
-          
+        setParam : function(value) {
+          $opts.objParam = value;
         },
-        getNodataStatus : function() {
-          return isNodata;
+        getTotalElements : function () {
+          return totalElements;
+        },
+        getContent : function () {
+          return content;
         }
     };
     
@@ -151,9 +152,9 @@
             $($opts.tiComponentId + " .grid-stack-item-content-header h2").text($opts.title);
           }
           //페이지 파라미터 설정
-          if (typeof setComponentPara === "function") {
+          if (typeof tiFunctions.setComponentPara === "function") {
             ($opts.isLog) ? console.log("4. 티컴포넌트 파라미터 추가 설정") : "";
-            setComponentPara();
+            tiFunctions.setComponentPara();
           } else {
             ($opts.isLog) ? console.log("4. 티컴포넌트 파라미터 추가 설정 없음.") : "";
           }
@@ -192,44 +193,76 @@
                 chart.reflow();
               }, 300);
             } else {
-              if (typeof onResizestop === "function") {
-                onResizestop(_innerMethod.getTiComponentItem());
+              if (typeof tiFunctions.onResizestop === "function") {
+                tiFunctions.onResizestop(_innerMethod.getTiComponentItem());
               } else {
                 console.warn("[INFO] onResizestop() 함수를 정의 및 구현 하십시요.");    
               }
             }
           });
           //페이지 별 (추가)이벤트 설정
-          if (typeof setPageEventListener === "function") {
+          if (typeof tiFunctions.setPageEventListener === "function") {
             ($opts.isLog) ? console.log("6. 티컴포넌트 이벤트 추가 설정") : "";
-            setPageEventListener();
+            tiFunctions.setPageEventListener();
           } else {
             ($opts.isLog) ? console.log("6. 티컴포넌트 이벤트 추가 설정 없음.") : "";
           }
         },
         //새로고침
         refresh : function() {
-          if (typeof refresh === "function") {
-            ($opts.isLog) ? console.log("99. 새로고침. id : " + $opts.tiComponentId + ", name : " + $opts.title) : "";
-            refresh(_innerMethod.getTiComponentItem());
-          } else {
-            console.warn("[INFO] refresh() 함수를 정의 및 구현 하십시요.");
-          }
+          ($opts.isLog) ? console.log("99. 새로고침. id : " + $opts.tiComponentId + ", name : " + $opts.title) : "";
+          _innerMethod.getData();
         },
-        //준비완료
+        //Ajax 호출
         getData : function() {
-          if (typeof ready === "function") {
-            ($opts.isLog) ? console.log("7. 티컴포넌트 설정 완료.") : "";
-            ready(_innerMethod.getTiComponentItem());
-          } else {
-            console.warn("[ERROR] ready() 함수를 정의 및 구현 하십시요.");
-          }
-            
-          ($opts.isLog) ? console.log("%c} END", "font:1em Arial;color:#CB6CFF;font-weight:bold") : "";
+          $.get($opts.url, $opts.objParam, function(data) {
+            totalElements = data.total_elements;
+            content = data.content;
+            if (isNodata) { //No data 진행중
+              if (totalElements > 0) {   //데이터 존재
+                _innerMethod.setNodata();
+                _innerMethod.afterContentInit();
+              }  
+            } else {
+              if (totalElements > 0) {   //데이터 존재
+                _innerMethod.afterContentInit();
+              } else {
+                _innerMethod.removeTiContainerchildren();
+                _innerMethod.setNodata();
+              }
+            }
+          });
         },
         //TiComponent Item
         getTiComponentItem : function() {$opts.url
           return tiComponentItems[$opts.tiComponentId];
+        },
+        setNodata : function() {
+          if (isNodata) {
+            _innerMethod.removeTiContainerchildren();
+          } else {
+            var strHtml = "<div class='no_data_content'>";
+            strHtml += "     <span class='icon'></span>";
+            strHtml += "     <span class='text'>" + $opts.nodataMessage + "</span>";
+            strHtml += "   </div>";
+            $tiContainer.addClass("no_data").append(strHtml);
+          }
+          isNodata = !isNodata;  
+          
+        },
+        afterContentInit : function() {
+          if (typeof tiFunctions.afterContentInit === "function") {
+            tiFunctions.afterContentInit(_innerMethod.getTiComponentItem());
+          } else {
+            console.warn("[ERROR] afterContentInit() 함수를 정의 및 구현 하십시요.");
+          }
+        },
+        removeTiContainerchildren : function() {
+          var $taget = $tiContainer.children();
+          if ($taget.length > 0) {
+            $taget.remove();
+            $tiContainer.removeClass("no_data");
+          }
         }
     }
     
@@ -248,8 +281,9 @@
       isHighCharts : null, // 하이차트 유무
       nodataMessage : "No data", // 데이터없을시 출력될 메세지
       url : null, // Ajax 호출 URL
+      objParam : null, //Ajax 호출때 넘길 파라미터
       isConfig : null, // 설정기능 유무
       isInformation : null, // (타이틀영역 옆) 정보창 유무
-      componentId : NaN
+      componentId : NaN //컴포넌트 ID값을 정의(conf_dashboard_component.id 와 매칭)
   };
 })(jQuery);

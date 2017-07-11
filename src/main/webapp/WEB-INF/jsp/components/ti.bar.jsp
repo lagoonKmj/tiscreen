@@ -4,29 +4,32 @@
 <div class="grid-stack-item-content-container" id="${tiContainerId}"></div>
 
 <script type="text/javascript">
+
+$(function () {
+ 
   var initialize = function() {
     var tiComponentId = "#" + "${tiComponentId}";
     var tiContainerId = "#" + "${tiContainerId}";
     var componentId = "${id}";
-    tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
-      tiComponentId : tiComponentId,
-      tiContainerId : tiContainerId,
-      isHighCharts : true,
-      url : "/getData.json",
-      componentId : componentId,
-      isLog : true
-    });
+    var options = {
+        tiComponentId : tiComponentId,
+        tiContainerId : tiContainerId,
+        isHighCharts : true,
+        url : "/getData.json",
+        componentId : componentId
+    };
+    var functions = {
+        afterContentInit : function($tiComponent) {
+          drawChart($tiComponent);
+        }
+    };
+    tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent(options, functions);
     tiComponentItems[tiComponentId].initialize();
   };
   
-  var ready = function() {
-    drawChart();
-  };
-  
-  var drawChart = function() {
-    var $tiComponent = tiComponentItems["#" + "${tiComponentId}"];
+  var drawChart = function($tiComponent) {
     var rect = $tiComponent.getRectangle();
-    Highcharts.chart("${tiContainerId}", {
+    Highcharts.chart($tiComponent.getTiContainerIdRemoveSharp(), {
         chart: {
           type: 'bar',
           width: rect.width,
@@ -93,8 +96,8 @@
     });
   };
   
-  var refresh = function($tiComponent) {
-  };
-  
   initialize();
+  
+});
+
 </script>

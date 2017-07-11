@@ -4,28 +4,29 @@
 <div class="grid-stack-item-content-container" id="${tiContainerId}"></div>
 
 <script type="text/javascript">
+
+$(function () {
+ 
   var initialize = function() {
     var tiComponentId = "#" + "${tiComponentId}";
     var tiContainerId = "#" + "${tiContainerId}";
     var componentId = "${id}";
-    tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent({
-      tiComponentId : tiComponentId,
-      tiContainerId : tiContainerId,
-      componentId : componentId,
-      url : "/getData.json"
-    });
+    var options = {
+        tiComponentId : tiComponentId,
+        tiContainerId : tiContainerId,
+        componentId : componentId,
+        url : "/getData.json"
+    };
+    var functions = {
+        afterContentInit : function($tiComponent) {
+        }
+    };
+    tiComponentItems[tiComponentId] = $(tiContainerId).tiComponent(options, functions);
     tiComponentItems[tiComponentId].initialize();
   };
   
-  var ready = function($tiComponent) {
-    $tiComponent.setNodata();
-  };
-  
-  var onResizestop = function($tiComponent) {
-  };
-  
-  var refresh = function($tiComponent) {
-  };
-  
   initialize();
+  
+});
+
 </script>
