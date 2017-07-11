@@ -87,7 +87,6 @@ $(function () {
       this.grid = $gridStatck.gridstack(options).data("gridstack");
       grid.removeAll();
       $.get("getUserDashboardComponent.json", { "dashboard_id" : 1 }, function(data) {
-        console.log(data);
         for (var iCnt = 0; iCnt < data.length; iCnt++) {
           var node = data[iCnt];
           if (dashboardComponentItems.hasOwnProperty(node.component_id)) {
@@ -152,6 +151,10 @@ $(function () {
       } else {
         console.warn("[ERROR] conf_dashboard_component 테이블에 class_name을 정의 하십시요.");
       }
+    });
+    $(".dashboard").on("click", function() {
+      tiScreenType = (tiScreenType == 0) ? 1 : 0;
+      setTiscreen();
     });
   }
   
@@ -240,23 +243,23 @@ $(function () {
         <dt>대시보드 설정</dt>
         <!-- 대시보드 선택 -->
         <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">네트워크 모니터링<span class="caret"></span></button>
-          <div class="dropdown_layer" id="selectDashboard">
+          <div class="dropdown_layer">
             <ul>
-              <li><a href="#">통합 대시보드</a></li>
+              <li><a class="dashboard">통합 대시보드</a></li>
               <li><a class="label">기본 대시보드</a>
                 <ul>
-                  <li><a href="#" class="selected">보안 모니터링</a></li>
-                  <li><a href="#">자산 모니터링</a></li>
-                  <li><a href="#">트래픽 모니터링</a></li>
-                  <li><a href="#">네트워크 모니터링</a></li>
+                  <li><a class="selected dashboard">보안 모니터링</a></li>
+                  <li><a class="dashboard">자산 모니터링</a></li>
+                  <li><a class="dashboard">트래픽 모니터링</a></li>
+                  <li><a class="dashboard">네트워크 모니터링</a></li>
                 </ul>
               </li>
               <li><a class="label">나의 대시보드</a>
                 <ul>
-                  <li><a href="#">보안 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                  <li><a href="#">자산 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                  <li><a href="#">트래픽 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                  <li><a href="#">네트워크 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a class="dashboard">보안 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a class="dashboard">자산 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a class="dashboard">트래픽 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
+                  <li><a class="dashboard">네트워크 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
                 </ul></li>
             </ul>
           </div>
@@ -268,7 +271,7 @@ $(function () {
         <dd class="bar">|</dd>
         <!-- 컴포넌트 추가 -->
         <dd class="dropdown"><button type="button" title="컴포넌트 추가" class="dropdown_toggle add_component"><span class="icon"></span><span class="txt">컴포넌트 추가</span><span class="caret"></span></button>
-          <div class="dropdown_layer" id="selectComponent">
+          <div class="dropdown_layer">
             <ul>
               <li id="compCommon" style="display: none;"><a class="label">공통</a>
                 <ul></ul>

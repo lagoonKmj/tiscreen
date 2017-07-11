@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.piolink.ts.domain.DashboardComponent;
+import com.piolink.ts.domain.Result;
 import com.piolink.ts.domain.UserDashboardComponent;
 import com.piolink.ts.service.DashboardComponentService;
 import com.piolink.ts.service.UserDashboardComponentService;
@@ -53,18 +54,22 @@ public class TiScreenController {
     public @ResponseBody String getData(@RequestParam Map<String, Object> map) {
         
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("total_elements", 1);
-        resultMap.put("content", "lagoon");
-        return JsonUtils.toJson(resultMap);
+        resultMap.put("test", 1);
+        resultMap.put("test_1", "lagoon");
+        Result result = new Result();
+        result.setTotalElements(1);
+        result.setContent(resultMap);
+        return JsonUtils.toJson(result);
     }
 
     @RequestMapping(value = "/getNodata.json", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String getNodata(@RequestParam Map<String, Object> map) {
         
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("total_elements", 0);
-        resultMap.put("content", "");
-        return JsonUtils.toJson(resultMap);
+        Result result = new Result();
+        result.setTotalElements(0);
+        result.setContent(resultMap);
+        return JsonUtils.toJson(result);
     }
     
     @RequestMapping(value = "/getDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
