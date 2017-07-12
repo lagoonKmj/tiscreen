@@ -12,10 +12,7 @@ import com.piolink.ts.dbproxy.AbstractEntity;
 @Entity(name = "conf_user_dashboard")
 public class UserDashboard extends AbstractEntity  {
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-    
+    private Long userId;
     private Integer index;
     private String name;
     private String isShare;
@@ -26,10 +23,6 @@ public class UserDashboard extends AbstractEntity  {
 
     public UserDashboard() {
         super();
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public Integer getIndex() {
@@ -86,6 +79,14 @@ public class UserDashboard extends AbstractEntity  {
 
     public void setIsUse(String isUse) {
         this.isUse = isUse;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
 }
