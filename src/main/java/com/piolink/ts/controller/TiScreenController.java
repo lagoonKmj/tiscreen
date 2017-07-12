@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.piolink.ts.domain.DashboardComponent;
 import com.piolink.ts.domain.Result;
+import com.piolink.ts.domain.UserDashboard;
 import com.piolink.ts.domain.UserDashboardComponent;
 import com.piolink.ts.service.DashboardComponentService;
 import com.piolink.ts.service.UserDashboardComponentService;
@@ -35,10 +36,16 @@ public class TiScreenController {
     @RequestMapping(value = "/tiscreen.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView tiscreen(@RequestParam Map<String, Object> map) {
         
+        ModelAndView mv = new ModelAndView("/tiscreen");
         //컴포넌트 가져오기
         Iterable<DashboardComponent> dashboardComponents = dashboardComponentService.findAll();
-        ModelAndView mv = new ModelAndView("/tiscreen");
         mv.addObject("dashboardComponents", JsonUtils.toJson(dashboardComponents));
+        //기본 대시보드 가져오기
+        Iterable<UserDashboard> basicDashboards = userDashboardService.findByUserId(-1L);
+        mv.addObject("basicDashboards", JsonUtils.toJson(basicDashboards));
+        //사용자 대시보드 가져오기
+        Iterable<UserDashboard> userDashboards = userDashboardService.findByUserId(36L);
+        mv.addObject("userDashboards", JsonUtils.toJson(userDashboards));
         return mv;
     }
 

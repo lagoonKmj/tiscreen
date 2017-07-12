@@ -30,13 +30,16 @@
 <script type="text/javascript">
 
 var tiComponentItems = new Object(); 
-var tiScreenType = 0; // 0 : gridstack dashboard, 1 : previous dashboard
 var numTiComponent = 0;
 var dashboardComponents = ${dashboardComponents};
+var basicDashboards = ${basicDashboards};
+var userDashboards = ${userDashboards};
 var dashboardComponentItems = new Object();
+var dashboardItems = new Object();
+var currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : 0; //TODO 최초 대시보드 가없을때 시나리오 작성 해야함.0으로 하면 grid null오류
 
 $(function () {
-
+  
   console.log("%cTiScreen", "font:8em Arial;color:#EC6521;font-weight:bold");
   
   var options = {
@@ -48,10 +51,28 @@ $(function () {
   };
   
   var initialize = function() {
+    setDashboardData();
     setComponentData();
     setTiscreen();
     setEventListener();
   };
+  
+  var setDashboardData = function() {
+    //통합 대시보드
+    dashboardItems[0] = {"id" : 0, "name" : "통합 대시보드"};
+    //기본 대시보드
+    $(basicDashboards).each(function(idx, element) {
+      var $html = $("<li><a>" + element.name + "</a></li>").addClass("dashboard").data("class-item", element);
+    	$("#dashboardBasic ul").append($html);
+    	dashboardItems[element.id] = element;
+    });
+    //사용자 대시보드
+    $(userDashboards).each(function(idx, element) {
+      var $html = $("<li><a>" + element.name + "</a><button class='delete' title='삭제'><span class='icon'></span></button></li>").addClass("dashboard").data("class-item", element);
+      $("#dashboardUserCustom ul").append($html);
+      dashboardItems[element.id] = element;
+    });
+  }
   
   var setComponentData = function() {
     $(dashboardComponents).each(function(idx, element) {
@@ -75,18 +96,21 @@ $(function () {
   }
   
   var setTiscreen = function() {
+    //
     var $tiscreen = $("#tiscreen");
     if ($tiscreen.children().length > 0) {
       $("#tiscreen").children(":gt(0)").remove();
       removeAll();
     }
-    
-    if (tiScreenType == 0) {
+    //대시보드 텍스트
+    $(".dashboard_name .dropdown_toggle").text(dashboardItems[currentDashboardId].name);
+    //
+    if (currentDashboardId > 0) {
       var $gridStatck = $("<div class='grid-stack'/>");
       $tiscreen.append($gridStatck);
       this.grid = $gridStatck.gridstack(options).data("gridstack");
       grid.removeAll();
-      $.get("getUserDashboardComponent.json", { "dashboard_id" : 1 }, function(data) {
+      $.get("getUserDashboardComponent.json", { "dashboard_id" : currentDashboardId }, function(data) {
         for (var iCnt = 0; iCnt < data.length; iCnt++) {
           var node = data[iCnt];
           if (dashboardComponentItems.hasOwnProperty(node.component_id)) {
@@ -110,11 +134,9 @@ $(function () {
   
   var setEventListener = function() {
     $("#removeAll").on("click", function() {
-      if (tiScreenType == 1) return;
       removeAll();
     });
     $(".save_dashboard").on("click", function() {
-      if (tiScreenType == 1) return;
       var nodes = grid.grid.nodes;
       var saveNodes = new Array();
       for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
@@ -123,21 +145,18 @@ $(function () {
         delete node["_grid"];
         saveNodes.push(node);
       }
-      var param = "dashboard_id=1";
-      param += "&components=" + JSON.stringify(saveNodes);
+      var param = {
+          "dashboard_id" : currentDashboardId,
+          "components" : JSON.stringify(saveNodes)
+      };
       $.get("/addUserDashboard.json", param, function(data) {
         alert("저장완료~!");
       });
     });
     $(".reload").on("click", function() {
-      if (tiScreenType == 1) return;
       for (var key in tiComponentItems) {
         tiComponentItems[key].refresh();
       }
-    });
-    $("#change").on("click", function() {
-      tiScreenType = (tiScreenType == 0) ? 1 : 0;
-      setTiscreen();
     });
     $(".dashboardComponent").on("click", function() {
       var node = $(this).data("class-item");
@@ -153,8 +172,16 @@ $(function () {
       }
     });
     $(".dashboard").on("click", function() {
-      tiScreenType = (tiScreenType == 0) ? 1 : 0;
-      setTiscreen();
+      var dashboard = $(this).data("class-item");
+      if (tiCommon.convertToBoolean(dashboard)) {
+        currentDashboardId = dashboard.id;
+        setTiscreen();
+      } else {
+        if (currentDashboardId > 0) {
+          currentDashboardId = 0;
+          setTiscreen();
+        }
+      }
     });
   }
   
@@ -242,25 +269,16 @@ $(function () {
       <dl>
         <dt>대시보드 설정</dt>
         <!-- 대시보드 선택 -->
-        <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">네트워크 모니터링<span class="caret"></span></button>
+        <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">통합 대시보드<span class="caret"></span></button>
           <div class="dropdown_layer">
             <ul>
-              <li><a class="dashboard">통합 대시보드</a></li>
-              <li><a class="label">기본 대시보드</a>
-                <ul>
-                  <li><a class="selected dashboard">보안 모니터링</a></li>
-                  <li><a class="dashboard">자산 모니터링</a></li>
-                  <li><a class="dashboard">트래픽 모니터링</a></li>
-                  <li><a class="dashboard">네트워크 모니터링</a></li>
-                </ul>
+              <li class="dashboard"><a>통합 대시보드</a></li>
+              <li id="dashboardBasic"><a class="label">기본 대시보드</a>
+                <ul></ul>
               </li>
-              <li><a class="label">나의 대시보드</a>
-                <ul>
-                  <li><a class="dashboard">보안 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                  <li><a class="dashboard">자산 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                  <li><a class="dashboard">트래픽 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                  <li><a class="dashboard">네트워크 모니터링</a><button class="delete" title="삭제"><span class="icon"></span></button></li>
-                </ul></li>
+              <li id="dashboardUserCustom"><a class="label">나의 대시보드</a>
+                <ul></ul>
+              </li>
             </ul>
           </div>
         </dd>
@@ -290,7 +308,6 @@ $(function () {
         </dd>
         <!-- 컴포넌트 추가 | end -->
         <dd><button type="button" id="removeAll" class="clone_dashboard"><span class="icon"></span><span class="txt">삭제</span></button></dd>
-<!--         <dd><button type="button" id="change" class="clone_dashboard"><span class="icon"></span><span class="txt">전환</span></button></dd> -->
       </dl>
     </div>
   </div>  
