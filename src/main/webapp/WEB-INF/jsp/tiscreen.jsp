@@ -184,17 +184,16 @@ $(function () {
         console.warn("[ERROR] conf_dashboard_component 테이블에 class_name을 정의 하십시요.");
       }
     });
-    //대시보드 클릭
-    $(".dashboard").on("click", function() {
+    //대시보드 클릭(delegate 처리를 위하여 #id로 구분)
+    $("#dashboardUserCustom ul, #dashboardBasic ul").on("click", "li", function() {
       var dashboard = $(this).data("class-item");
-      if (tiCommon.convertToBoolean(dashboard)) {
-        currentDashboardId = dashboard.id;
+      currentDashboardId = dashboard.id;
+      setTiscreen();
+    });
+    $("#dashboardOriginal").on("click", function() {
+      if (currentDashboardId > 0) {
+        currentDashboardId = 0;
         setTiscreen();
-      } else {
-        if (currentDashboardId > 0) {
-          currentDashboardId = 0;
-          setTiscreen();
-        }
       }
     });
     //추가 버튼 클릭
@@ -207,6 +206,10 @@ $(function () {
           "name" : $("#dashboardName").val()
       };
       $.get("/tiscreen/addUserDashboard.json", params, function(data) {
+        var element = data.content;
+        var $html = $("<li><a>" + element.name + "</a><button class='delete' title='삭제'><span class='icon'></span></button></li>").addClass("dashboard").data("class-item", element);
+        $("#dashboardUserCustom ul").append($html);
+        dashboardItems[element.id] = element;
         $(".pop_save_dashboard").bPopup().close();
         $("#dashboardName").val("");
       });
@@ -300,7 +303,7 @@ $(function () {
         <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">통합 대시보드<span class="caret"></span></button>
           <div class="dropdown_layer">
             <ul>
-              <li class="dashboard"><a>통합 대시보드</a></li>
+              <li id="dashboardOriginal" class="dashboard"><a>통합 대시보드</a></li>
               <li id="dashboardBasic"><a class="label">기본 대시보드</a>
                 <ul></ul>
               </li>
