@@ -49,7 +49,7 @@ public class TiScreenController {
         return mv;
     }
 
-    @RequestMapping(value = "/load.do", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/tiscreen/load.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView load(@RequestParam Map<String, Object> map) {
         ModelAndView mv = new ModelAndView("/components/" + map.get("className"));
         map.put("tiContainerId", "container_" + map.get("numTiComponent"));
@@ -57,7 +57,7 @@ public class TiScreenController {
         return mv;
     }
     
-    @RequestMapping(value = "/getData.json", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/tiscreen/getData.json", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String getData(@RequestParam Map<String, Object> map) {
         
         Map<String, Object> resultMap = new HashMap<>();
@@ -69,7 +69,7 @@ public class TiScreenController {
         return JsonUtils.toJson(result);
     }
 
-    @RequestMapping(value = "/getNodata.json", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/tiscreen/getNodata.json", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String getNodata(@RequestParam Map<String, Object> map) {
         
         Map<String, Object> resultMap = new HashMap<>();
@@ -79,15 +79,31 @@ public class TiScreenController {
         return JsonUtils.toJson(result);
     }
     
-    @RequestMapping(value = "/getDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/tiscreen/getDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String getDashboardComponent(@RequestParam Map<String, Object> map) {
         
         Iterable<DashboardComponent> dashboardComponents = dashboardComponentService.findAll();
         return JsonUtils.toJson(dashboardComponents);
     }
     
-    @RequestMapping(value = "/addUserDashboard.json", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/tiscreen/addUserDashboard.json", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String addUserDashboard(@RequestParam Map<String, Object> map) {
+
+        String name = StringUtils.get(map.get("name"));
+        
+        UserDashboard userDashboard = new UserDashboard();
+        userDashboard.setName(name);
+        userDashboard.setUserId(36L);
+        UserDashboard resultUserDashboard = userDashboardService.save(userDashboard);
+        
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+        resultMap.put("content", resultUserDashboard);
+        return JsonUtils.toJson(resultMap);
+    }
+    
+    @RequestMapping(value = "/tiscreen/addUserDashboardComponents.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String addUserDashboardComponents(@RequestParam Map<String, Object> map) {
         
         Long dashboardId = StringUtils.getLong(map.get("dashboard_id"));
         String jsonComponents = StringUtils.get(map.get("components"));
@@ -110,7 +126,7 @@ public class TiScreenController {
         return JsonUtils.toJson(resultMap);
     }
     
-    @RequestMapping(value = "/getUserDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/tiscreen/getUserDashboardComponent.json", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String getUserDashboardComponent(@RequestParam Map<String, Object> map) {
         
         Long dashboardId = StringUtils.getLong(map.get("dashboard_id"));

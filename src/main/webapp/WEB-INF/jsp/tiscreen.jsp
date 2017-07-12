@@ -26,6 +26,12 @@
 <script type="text/javascript" src="/resources/js/tiscreen/tiscreen.ui.js"></script>
 <script type="text/javascript" src="/resources/js/tiscreen/tiscreen.icon.js"></script>
 
+<!-- 추가 07.12 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bPopup/0.11.0/jquery.bpopup.min.js"></script>
+<!-- <script src="../../resources/js/tableHeadFixer.js"></script> -->
+<!-- <script src="../../resources/js/tiscreen/jstree.min.js"></script> -->
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" /> -->
+
 
 <script type="text/javascript">
 
@@ -110,7 +116,10 @@ $(function () {
       $tiscreen.append($gridStatck);
       this.grid = $gridStatck.gridstack(options).data("gridstack");
       grid.removeAll();
-      $.get("getUserDashboardComponent.json", { "dashboard_id" : currentDashboardId }, function(data) {
+      var params = {
+          "dashboard_id" : currentDashboardId
+      };
+      $.get("/tiscreen/getUserDashboardComponent.json", params, function(data) {
         for (var iCnt = 0; iCnt < data.length; iCnt++) {
           var node = data[iCnt];
           if (dashboardComponentItems.hasOwnProperty(node.component_id)) {
@@ -133,9 +142,11 @@ $(function () {
   }
   
   var setEventListener = function() {
+    //삭제 버튼 클릭
     $("#removeAll").on("click", function() {
       removeAll();
     });
+    //저장 버튼 클릭
     $(".save_dashboard").on("click", function() {
       var nodes = grid.grid.nodes;
       var saveNodes = new Array();
@@ -145,19 +156,21 @@ $(function () {
         delete node["_grid"];
         saveNodes.push(node);
       }
-      var param = {
+      var params = {
           "dashboard_id" : currentDashboardId,
           "components" : JSON.stringify(saveNodes)
       };
-      $.get("/addUserDashboard.json", param, function(data) {
+      $.get("/tiscreen/addUserDashboardComponents.json", params, function(data) {
         alert("저장완료~!");
       });
     });
+    //새로고침 버튼 클릭
     $(".reload").on("click", function() {
       for (var key in tiComponentItems) {
         tiComponentItems[key].refresh();
       }
     });
+    //대시보드 컴포넌트 클릭
     $(".dashboardComponent").on("click", function() {
       var node = $(this).data("class-item");
       node.pos_x = 0; 
@@ -171,6 +184,7 @@ $(function () {
         console.warn("[ERROR] conf_dashboard_component 테이블에 class_name을 정의 하십시요.");
       }
     });
+    //대시보드 클릭
     $(".dashboard").on("click", function() {
       var dashboard = $(this).data("class-item");
       if (tiCommon.convertToBoolean(dashboard)) {
@@ -182,6 +196,20 @@ $(function () {
           setTiscreen();
         }
       }
+    });
+    //추가 버튼 클릭
+    $(".add_dashboard").on("click", function() {
+      $(".pop_save_dashboard").bPopup();
+    });
+    //새로운 대시보드 추가
+    $("#addDashboard").on("click", function() {
+      var params = {
+          "name" : $("#dashboardName").val()
+      };
+      $.get("/tiscreen/addUserDashboard.json", params, function(data) {
+        $(".pop_save_dashboard").bPopup().close();
+        $("#dashboardName").val("");
+      });
     });
   }
   
@@ -209,7 +237,7 @@ $(function () {
         node.id
         );
     
-    $("#" + tiComponentId).load("/load.do", {
+    $("#" + tiComponentId).load("/tiscreen/load.do", {
       "tiComponentId" : tiComponentId, 
       "numTiComponent" : numTiComponent, 
       "className": className, 
@@ -315,5 +343,21 @@ $(function () {
   <div id="tiscreen">
   </div>
 </div>
+<!------------------------------------------- Popup ------------------------------------------------> 
+<!-- Popup : 대시보드 저장 | start  -->
+<div class="divPopup pop_save_dashboard">
+  <div class="header">
+    <h4>대시보드 추가</h4>
+    <span class="btn_close b-close"></span> </div>
+  <div class="content">
+    <input id="dashboardName" type="text" placeholder="대시보드명을 입력하세요." />
+  </div>
+  <div class="btn_area">
+    <button type="button" class="b-close">취소</button>
+    <button type="button" class="primary" id="addDashboard">저장</button>
+  </div>
+</div>
+<!-- Popup : 대시보드 저장 | end  --> 
+<!------------------------------------------- Popup | end ------------------------------------------------>
 </body>
 </html>

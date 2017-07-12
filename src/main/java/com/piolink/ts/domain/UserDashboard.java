@@ -3,8 +3,7 @@ package com.piolink.ts.domain;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.piolink.ts.dbproxy.AbstractEntity;
 
@@ -13,24 +12,20 @@ import com.piolink.ts.dbproxy.AbstractEntity;
 public class UserDashboard extends AbstractEntity  {
 
     private Long userId;
-    private Integer index;
     private String name;
+    @Transient
     private String isShare;
+    @Transient
     private Date regDate;
+    @Transient
     private Date updDate;
+    @Transient
     private String description;
+    @Transient
     private String isUse;
 
     public UserDashboard() {
         super();
-    }
-
-    public Integer getIndex() {
-        return index;
-    }
-
-    public void setIndex(Integer index) {
-        this.index = index;
     }
 
     public String getName() {
