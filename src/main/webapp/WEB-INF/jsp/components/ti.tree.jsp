@@ -15,7 +15,7 @@ $(function () {
         tiComponentId : tiComponentId,
         tiContainerId : tiContainerId,
         componentId : componentId,
-        url : "/getData.json"
+        url : "/tiscreen/getData.json"
     };
     var functions = {
         afterContentInit : function($tiComponent) {

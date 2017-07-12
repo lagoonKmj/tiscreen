@@ -16,7 +16,7 @@ $(function () {
     var options = {
       tiComponentId : tiComponentId,
       tiContainerId : tiContainerId,
-      url : "/getData.json",
+      url : "/tiscreen/getData.json",
       componentId : componentId
     };
     //함수(afterContentInit() 필수, 나머지는 선택)

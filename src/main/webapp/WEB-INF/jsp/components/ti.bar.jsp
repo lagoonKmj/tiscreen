@@ -15,7 +15,7 @@ $(function () {
         tiComponentId : tiComponentId,
         tiContainerId : tiContainerId,
         isHighCharts : true,
-        url : "/getData.json",
+        url : "/tiscreen/getData.json",
         componentId : componentId
     };
     var functions = {
