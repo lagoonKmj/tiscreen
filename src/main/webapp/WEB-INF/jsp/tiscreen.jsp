@@ -198,7 +198,6 @@ $(function () {
           //현재 보고있는 대시보드 삭제
           if (currentDashboardId == dashboard.id) {
             userDashboards = data.content;
-            console.log(data);
             currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : 0;
             setTiscreen();
           }
