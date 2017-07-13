@@ -28,8 +28,8 @@
 
 <!-- 추가 07.12 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bPopup/0.11.0/jquery.bpopup.min.js"></script>
-<!-- <script src="../../resources/js/tableHeadFixer.js"></script> -->
-<!-- <script src="../../resources/js/tiscreen/jstree.min.js"></script> -->
+<script type="text/javascript" src="/resources/js/tableHeadFixer.js"></script>
+<script type="text/javascript" src="/resources/js/tiscreen/jstree.min.js"></script>
 <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" /> -->
 
 
@@ -300,14 +300,14 @@ $(function () {
       </div>
       <div class="util">
         <ul>
-          <li>
-            <button type="button" title="새로고침" class="reload" onClick=""><span class="icon"></span></button>
+          <li class="btn reload">
+            <button type="button" title="새로고침" onClick=""><span class="icon"></span></button>
           </li>
-          <li>
-            <button type="button" title="설정" class="dashboard_setting" onClick=""><span class="icon"></span></button>
+          <li class="btn dashboard_setting">
+            <button type="button" title="대시보드 설정" onClick=""><span class="icon"></span></button>
           </li>
-          <li>
-            <button type="button" title="닫기" class="close" onClick=""><span class="icon"></span></button>
+          <li class="btn close">
+            <button type="button" title="닫기" onClick=""><span class="icon"></span></button>
           </li>
         </ul>
       </div>
@@ -318,9 +318,10 @@ $(function () {
   <div class="dashboard_control">
     <div class="inner">
       <dl>
-        <dt>대시보드 설정</dt>
+        <!--dt>대시보드</dt-->
         <!-- 대시보드 선택 -->
-        <dd class="dropdown dashboard_name"><button type="button" class="dropdown_toggle">통합 대시보드<span class="caret"></span></button>
+        <dd class="btn dropdown dashboard_name">
+          <button type="button" class="dropdown_toggle">통합 대시보드<span class="caret"></span></button>
           <div class="dropdown_layer">
             <ul>
               <li id="dashboardOriginal" class="dashboard"><a>통합 대시보드</a></li>
@@ -334,12 +335,19 @@ $(function () {
           </div>
         </dd>
         <!-- 대시보드 선택 -->
-        <dd><button type="button" title="저장" class="save_dashboard"><span class="icon"></span><span class="txt">저장</span></button></dd>
-        <dd><button type="button" title="추가" class="add_dashboard"><span class="icon"></span><span class="txt">추가</span></button></dd>
-<!--         <dd><button type="button" title="복제" class="clone_dashboard"><span class="icon"></span><span class="txt">복제</span></button></dd> -->
+        <dd class="btn save_dashboard">
+          <button type="button" title="저장"><span class="icon"></span><span class="txt">저장</span></button>
+        </dd>
+        <dd class="btn add_dashboard">
+          <button type="button" title="추가"><span class="icon"></span><span class="txt">추가</span></button>
+        </dd>
+<!--         <dd class="btn clone_dashboard"> -->
+<!--           <button type="button" title="복제"><span class="icon"></span><span class="txt">복제</span></button> -->
+<!--         </dd> -->
         <dd class="bar">|</dd>
         <!-- 컴포넌트 추가 -->
-        <dd class="dropdown"><button type="button" title="컴포넌트 추가" class="dropdown_toggle add_component"><span class="icon"></span><span class="txt">컴포넌트 추가</span><span class="caret"></span></button>
+        <dd class="btn dropdown add_component">
+          <button type="button" title="컴포넌트 추가" class="dropdown_toggle"><span class="icon"></span><span class="txt">컴포넌트 추가</span><span class="caret"></span></button>
           <div class="dropdown_layer">
             <ul>
               <li id="compCommon" style="display: none;"><a class="label">공통</a>
@@ -358,7 +366,6 @@ $(function () {
           </div>
         </dd>
         <!-- 컴포넌트 추가 | end -->
-        <dd><button type="button" id="removeAll" class="clone_dashboard"><span class="icon"></span><span class="txt">삭제</span></button></dd>
       </dl>
     </div>
   </div>  
