@@ -94,8 +94,23 @@ public class TiScreenController {
         UserDashboard userDashboard = new UserDashboard();
         userDashboard.setName(name);
         userDashboard.setUserId(36L);
+        userDashboard.setIsUse("Y");
         UserDashboard resultUserDashboard = userDashboardService.save(userDashboard);
         
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+        resultMap.put("content", resultUserDashboard);
+        return JsonUtils.toJson(resultMap);
+    }
+    
+    @RequestMapping(value = "/tiscreen/deleteUserDashboard.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String deleteUserDashboard(@RequestParam Map<String, Object> map) {
+
+        Long dashboardId = StringUtils.getLong(map.get("dashboard_id"));
+        
+        UserDashboard userDashboard = userDashboardService.findOne(dashboardId);
+        userDashboard.setIsUse("N");
+        UserDashboard resultUserDashboard = userDashboardService.save(userDashboard);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", "success");
         resultMap.put("content", resultUserDashboard);

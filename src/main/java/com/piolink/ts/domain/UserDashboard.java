@@ -21,7 +21,6 @@ public class UserDashboard extends AbstractEntity  {
     private Date updDate;
     @Transient
     private String description;
-    @Transient
     private String isUse;
 
     public UserDashboard() {

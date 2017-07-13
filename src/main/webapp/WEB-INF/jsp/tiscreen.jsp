@@ -185,10 +185,22 @@ $(function () {
       }
     });
     //대시보드 클릭(delegate 처리를 위하여 #id로 구분)
-    $("#dashboardUserCustom ul, #dashboardBasic ul").on("click", "li", function() {
-      var dashboard = $(this).data("class-item");
+    $("#dashboardUserCustom ul, #dashboardBasic ul").on("click", "li", function(event) {
+      var $this = $(this);
+      var dashboard = $this.data("class-item");
       currentDashboardId = dashboard.id;
-      setTiscreen();
+      if ($(event.target).is("a")) {
+        setTiscreen();
+      } else { //삭제(휴지통) 처리
+        var params = {
+            "dashboard_id" : currentDashboardId
+        };
+        $.get("/tiscreen/deleteUserDashboard.json", params, function(data) {
+          $this.remove();
+          delete dashboardItems[currentDashboardId];
+        });
+      }
+      
     });
     $("#dashboardOriginal").on("click", function() {
       if (currentDashboardId > 0) {
