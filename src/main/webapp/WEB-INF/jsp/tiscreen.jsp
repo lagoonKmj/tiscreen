@@ -42,7 +42,7 @@ var basicDashboards = ${basicDashboards};
 var userDashboards = ${userDashboards};
 var dashboardComponentItems = new Object();
 var dashboardItems = new Object();
-var currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : 0; //TODO 최초 대시보드 가없을때 시나리오 작성 해야함.0으로 하면 grid null오류
+var currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : 0;
 
 $(function () {
   
