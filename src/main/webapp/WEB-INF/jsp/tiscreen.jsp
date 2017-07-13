@@ -104,10 +104,7 @@ $(function () {
   var setTiscreen = function() {
     //
     var $tiscreen = $("#tiscreen");
-    if ($tiscreen.children().length > 0) {
-      $("#tiscreen").children(":gt(0)").remove();
-      removeAll();
-    }
+    $tiscreen.children().remove();
     //대시보드 텍스트
     $(".dashboard_name .dropdown_toggle").text(dashboardItems[currentDashboardId].name);
     //
@@ -115,7 +112,7 @@ $(function () {
       var $gridStatck = $("<div class='grid-stack'/>");
       $tiscreen.append($gridStatck);
       this.grid = $gridStatck.gridstack(options).data("gridstack");
-      grid.removeAll();
+      removeAll();
       var params = {
           "dashboard_id" : currentDashboardId
       };
@@ -123,12 +120,12 @@ $(function () {
         for (var iCnt = 0; iCnt < data.length; iCnt++) {
           var node = data[iCnt];
           if (dashboardComponentItems.hasOwnProperty(node.component_id)) {
-            node.class_name = dashboardComponentItems[node.component_id].class_name; 
-            node.name = dashboardComponentItems[node.component_id].name; 
-            node.id = node.component_id; 
+            node.class_name = dashboardComponentItems[node.component_id].class_name;
+            node.name = dashboardComponentItems[node.component_id].name;
+            node.id = node.component_id;
             addTiComponent(node);
+          }
         }
-     }
       });
     } else {
       var $orgDashboard = $("<div class='ti-dashboard'><img src='../../resources/images/tiscreen/org_dashboard.png' /></div>");
@@ -188,19 +185,25 @@ $(function () {
     $("#dashboardUserCustom ul, #dashboardBasic ul").on("click", "li", function(event) {
       var $this = $(this);
       var dashboard = $this.data("class-item");
-      currentDashboardId = dashboard.id;
       if ($(event.target).is("a")) {
+        currentDashboardId = dashboard.id;
         setTiscreen();
       } else { //삭제(휴지통) 처리
         var params = {
-            "dashboard_id" : currentDashboardId
+            "dashboard_id" : dashboard.id
         };
         $.get("/tiscreen/deleteUserDashboard.json", params, function(data) {
           $this.remove();
-          delete dashboardItems[currentDashboardId];
+          delete dashboardItems[dashboard.id];
+          //현재 보고있는 대시보드 삭제
+          if (currentDashboardId == dashboard.id) {
+            userDashboards = data.content;
+            console.log(data);
+            currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : 0;
+            setTiscreen();
+          }
         });
       }
-      
     });
     $("#dashboardOriginal").on("click", function() {
       if (currentDashboardId > 0) {
@@ -214,8 +217,13 @@ $(function () {
     });
     //새로운 대시보드 추가
     $("#addDashboard").on("click", function() {
+      var name = $("#dashboardName").val();
+      if (name.length < 1) {
+        alert("대시보드 명은 최소 한글자 이상 되어야 합니다.")
+        return;
+      }
       var params = {
-          "name" : $("#dashboardName").val()
+          "name" : name
       };
       $.get("/tiscreen/addUserDashboard.json", params, function(data) {
         var element = data.content;
@@ -319,7 +327,7 @@ $(function () {
               <li id="dashboardBasic"><a class="label">기본 대시보드</a>
                 <ul></ul>
               </li>
-              <li id="dashboardUserCustom"><a class="label">나의 대시보드</a>
+              <li id="dashboardUserCustom"><a class="label">사용자 대시보드</a>
                 <ul></ul>
               </li>
             </ul>

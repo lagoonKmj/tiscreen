@@ -110,10 +110,12 @@ public class TiScreenController {
         
         UserDashboard userDashboard = userDashboardService.findOne(dashboardId);
         userDashboard.setIsUse("N");
-        UserDashboard resultUserDashboard = userDashboardService.save(userDashboard);
+        userDashboardService.save(userDashboard);
+        //사용자 대시보드 다시 가져오기
+        Iterable<UserDashboard> userDashboards = userDashboardService.findByUserId(36L);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", "success");
-        resultMap.put("content", resultUserDashboard);
+        resultMap.put("content", userDashboards);
         return JsonUtils.toJson(resultMap);
     }
     
