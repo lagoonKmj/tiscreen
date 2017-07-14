@@ -90,12 +90,18 @@ public class TiScreenController {
     public @ResponseBody String addUserDashboard(@RequestParam Map<String, Object> map) {
 
         String name = StringUtils.get(map.get("name"));
+        int add_dashboard_type = StringUtils.getInt(map.get("add_dashboard_type"));
         
         UserDashboard userDashboard = new UserDashboard();
         userDashboard.setName(name);
         userDashboard.setUserId(36L);
         userDashboard.setIsUse("Y");
         UserDashboard resultUserDashboard = userDashboardService.save(userDashboard);
+        //기본 대시보드(0) 에서 (대시보드)저장은 컴포넌트 까지 Copy 합니다.
+        if (add_dashboard_type == 0) {
+            map.put("dashboard_id", resultUserDashboard.getId());
+            addUserDashboardComponents(map);
+        }
         
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", "success");

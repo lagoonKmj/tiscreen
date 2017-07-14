@@ -31,7 +31,8 @@
 <script type="text/javascript" src="/resources/js/tableHeadFixer.js"></script>
 <script type="text/javascript" src="/resources/js/tiscreen/jstree.min.js"></script>
 <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" /> -->
-
+<!-- 추가 07.14 -->
+<script type="text/javascript" src="/resources/js/tiscreen/tiscreen.constants.js"></script>
 
 <script type="text/javascript">
 
@@ -42,7 +43,8 @@ var basicDashboards = ${basicDashboards};
 var userDashboards = ${userDashboards};
 var dashboardComponentItems = new Object();
 var dashboardItems = new Object();
-var currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : 0;
+var currentDashboardId = (userDashboards.length > 0) ? userDashboards[0].id : tiConstant.ORIGINAL_DASHBOARD_ID;
+var addDashboardType = tiConstant.NEW_DASHBOARD_ADD;
 
 $(function () {
   
@@ -61,11 +63,14 @@ $(function () {
     setComponentData();
     setTiscreen();
     setEventListener();
+    
+    //임시 트리거
+    $(".dashboard_setting" ).trigger("click");
   };
   
   var setDashboardData = function() {
     //통합 대시보드
-    dashboardItems[0] = {"id" : 0, "name" : "통합 대시보드"};
+    dashboardItems[0] = {"id" : tiConstant.ORIGINAL_DASHBOARD_ID, "name" : tiConstant.ORIGINAL_DASHBOARD_NAME};
     //기본 대시보드
     $(basicDashboards).each(function(idx, element) {
       var $html = $("<li><a>" + element.name + "</a></li>").addClass("dashboard").data("class-item", element);
@@ -145,21 +150,20 @@ $(function () {
     });
     //저장 버튼 클릭
     $(".save_dashboard").on("click", function() {
-      var nodes = grid.grid.nodes;
-      var saveNodes = new Array();
-      for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
-        var node = tiCommon.deepCopy(nodes[iCnt]);
-        delete node["el"];
-        delete node["_grid"];
-        saveNodes.push(node);
+      if (currentDashboardId > tiConstant.BASIC_DASHBOARD_ID_STARTWITH) {
+        if (confirm("기본 대시보드는 저장을 할수 없습니다.\n사용자대시보드에 신규 등록하시겠습니까?")) {
+          addDashboardType = tiConstant.BASIC_DASHBOARD_ADD;
+          $(".pop_save_dashboard").bPopup();
+        }
+      } else {
+        var params = {
+            "dashboard_id" : currentDashboardId,
+            "components" : JSON.stringify(getNodesData())
+        };
+        $.get("/tiscreen/addUserDashboardComponents.json", params, function(data) {
+          alert("현재 상태를 저장하였습니다.");
+        });
       }
-      var params = {
-          "dashboard_id" : currentDashboardId,
-          "components" : JSON.stringify(saveNodes)
-      };
-      $.get("/tiscreen/addUserDashboardComponents.json", params, function(data) {
-        alert("저장완료~!");
-      });
     });
     //새로고침 버튼 클릭
     $(".reload").on("click", function() {
@@ -205,13 +209,14 @@ $(function () {
       }
     });
     $("#dashboardOriginal").on("click", function() {
-      if (currentDashboardId > 0) {
-        currentDashboardId = 0;
+      if (currentDashboardId != tiConstant.ORIGINAL_DASHBOARD_ID) {
+        currentDashboardId = tiConstant.ORIGINAL_DASHBOARD_ID;
         setTiscreen();
       }
     });
     //추가 버튼 클릭
     $(".add_dashboard").on("click", function() {
+      addDashboardType = tiConstant.NEW_DASHBOARD_ADD;
       $(".pop_save_dashboard").bPopup();
     });
     //새로운 대시보드 추가
@@ -222,8 +227,12 @@ $(function () {
         return;
       }
       var params = {
-          "name" : name
+          "name" : name,
+          "add_dashboard_type" : addDashboardType 
       };
+      if (addDashboardType == tiConstant.BASIC_DASHBOARD_ADD) { 
+        params["components"] = JSON.stringify(getNodesData()); 
+      }
       $.get("/tiscreen/addUserDashboard.json", params, function(data) {
         var element = data.content;
         var $html = $("<li><a>" + element.name + "</a><button class='delete' title='삭제'><span class='icon'></span></button></li>").addClass("dashboard").data("class-item", element);
@@ -231,6 +240,12 @@ $(function () {
         dashboardItems[element.id] = element;
         $(".pop_save_dashboard").bPopup().close();
         $("#dashboardName").val("");
+        //알림
+        var successMsg = "새로운 대시보드[" + name + "]를 추가하였습니다."
+        if (addDashboardType == tiConstant.BASIC_DASHBOARD_ADD) {
+          successMsg = "현재 상태를 새로운 대시보드[" + name + "] 에 추가를 하였습니다.";
+        }
+        alert(successMsg);
       });
     });
   }
@@ -267,6 +282,18 @@ $(function () {
     });
     numTiComponent++;
   };
+  
+  var getNodesData = function() {
+    var nodes = grid.grid.nodes;
+    var saveNodes = new Array();
+    for (var iCnt = 0; iCnt < nodes.length; iCnt++) {
+      var node = tiCommon.deepCopy(nodes[iCnt]);
+      delete node["el"];
+      delete node["_grid"];
+      saveNodes.push(node);
+    }
+    return saveNodes;
+  }
   
   initialize();
   
