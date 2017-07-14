@@ -215,7 +215,7 @@
         },
         //Ajax 호출
         getData : function() {
-          $.get($opts.url, $opts.objParam, function(data) {
+          $.post($opts.url, $opts.objParam, function(data) {
             totalElements = data.total_elements;
             content = data.content;
             if (isNodata) { //No data 진행중

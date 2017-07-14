@@ -121,7 +121,7 @@ $(function () {
       var params = {
           "dashboard_id" : currentDashboardId
       };
-      $.get("/tiscreen/getUserDashboardComponent.json", params, function(data) {
+      $.post("/tiscreen/getUserDashboardComponent.json", params, function(data) {
         for (var iCnt = 0; iCnt < data.length; iCnt++) {
           var node = data[iCnt];
           if (dashboardComponentItems.hasOwnProperty(node.component_id)) {
@@ -160,7 +160,7 @@ $(function () {
             "dashboard_id" : currentDashboardId,
             "components" : JSON.stringify(getNodesData())
         };
-        $.get("/tiscreen/addUserDashboardComponents.json", params, function(data) {
+        $.post("/tiscreen/addUserDashboardComponents.json", params, function(data) {
           alert("현재 상태를 저장하였습니다.");
         });
       }
@@ -196,7 +196,7 @@ $(function () {
         var params = {
             "dashboard_id" : dashboard.id
         };
-        $.get("/tiscreen/deleteUserDashboard.json", params, function(data) {
+        $.post("/tiscreen/deleteUserDashboard.json", params, function(data) {
           $this.remove();
           delete dashboardItems[dashboard.id];
           //현재 보고있는 대시보드 삭제
@@ -233,7 +233,7 @@ $(function () {
       if (addDashboardType == tiConstant.BASIC_DASHBOARD_ADD) { 
         params["components"] = JSON.stringify(getNodesData()); 
       }
-      $.get("/tiscreen/addUserDashboard.json", params, function(data) {
+      $.post("/tiscreen/addUserDashboard.json", params, function(data) {
         var element = data.content;
         var $html = $("<li><a>" + element.name + "</a><button class='delete' title='삭제'><span class='icon'></span></button></li>").addClass("dashboard").data("class-item", element);
         $("#dashboardUserCustom ul").append($html);
